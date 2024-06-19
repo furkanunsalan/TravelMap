@@ -3,13 +3,14 @@ import "@maptiler/sdk/dist/maptiler-sdk.css";
 import './css/map.css';
 import {useEffect, useRef, useState} from "react";
 import places from '../places.jsx'
+const api = import.meta.env.VITE_API_KEY;
 
 export default function Map() {
     const mapContainer = useRef(null);
     const map = useRef(null);
     const ist = { lng: 28.974969, lat: 41.086325 };
     const [zoom] = useState(3);
-    maptilersdk.config.apiKey = '5yZjoff4xad5ZpYAx5ix';
+    maptilersdk.config.apiKey = api;
 
     useEffect(() => {
         if (map.current) return; // stops map from intializing more than once
