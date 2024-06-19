@@ -9,7 +9,7 @@ export default function Map() {
     const map = useRef(null);
     const ist = { lng: 28.974969, lat: 41.086325 };
     const [zoom] = useState(3);
-    maptilersdk.config.apiKey = 'LVUKYURnAzIT8WW4OoJ9';
+    maptilersdk.config.apiKey = '5yZjoff4xad5ZpYAx5ix';
 
     useEffect(() => {
         if (map.current) return; // stops map from intializing more than once
