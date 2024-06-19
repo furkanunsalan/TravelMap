@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 export default function Place({bookmarkName,date,address}){
     return (
-        <div className="placebox">
+        <div className="placebox my-5">
             <div className="heading">
                 <h4>{bookmarkName} <b className="date">- {date}</b></h4>
             </div>
