@@ -27,6 +27,7 @@ export const toGo = [
         latitude: '41.1053739761213',
         longtitude: '28.986617726983777',
     },
+    
 ];
 
 export const chillPlaces = [

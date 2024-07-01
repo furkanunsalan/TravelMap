@@ -27,7 +27,8 @@ export default function Map() {
             const longitude = parseFloat(place.longtitude);
             new maptilersdk.Marker({ color: "#FF0000" })
                 .setLngLat([longitude, latitude])
-                .addTo(map.current);
+                .addTo(map.current)
+                .setPopup(new maptilersdk.Popup().setHTML(`<h3>${place.name}</h3><p>${place.address}</p>`))
         });
     }, [ist.lng, ist.lat, zoom]);
 
