@@ -3,18 +3,18 @@ import './App.css';
 import SideBar from "./components/sidebar.jsx";
 
 function App() {
-    return(
+    return (
         <div className="App">
             <div className="main">
-                <div className="scroll">
-                    <SideBar/>
+                <div className="sidebar">
+                    <SideBar />
                 </div>
-                <div>
-                    <Map/>
+                <div className="main-content">
+                    <Map />
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default App;

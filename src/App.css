@@ -14,6 +14,7 @@ code {
   monospace;
 }
 
+/* Default styles for larger devices */
 .main {
     display: grid;
     grid-template-columns: 1fr 3fr;
@@ -21,6 +22,22 @@ code {
     grid-template-areas: "sidebar main";
     height: 100vh;
 }
+
+/* Styles for mobile devices */
+@media (max-width: 768px) {
+    .main {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        grid-template-areas: "main";
+        height: 100vh;
+    }
+
+    .sidebar {
+        display: none;
+    }
+}
+
 .scroll {
     overflow-y: scroll;
     height: 100vh;

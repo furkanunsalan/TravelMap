@@ -20,6 +20,13 @@ export const toGo = [
         latitude: '40.4319',
         longtitude: '32.934',
     },
+    {
+        name: 'Zula Vadi',
+        date: '01-07-2024',
+        address: "Vadistanbul",
+        latitude: '41.1053739761213',
+        longtitude: '28.986617726983777',
+    },
 ];
 
 export const chillPlaces = [
@@ -44,6 +51,7 @@ export const chillPlaces = [
         latitude: '40.4319',
         longtitude: '32.934',
     },
+
 ];
 
 export const istanbulBurgerList = [
