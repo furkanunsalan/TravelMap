@@ -6,7 +6,7 @@ import {
     TabPanel,
 } from "@material-tailwind/react";
 
-import { toGo, chillPlaces } from "../places.jsx";
+import {toGo, istanbulBurgerList} from "../places.jsx";
 import Place from "./place.jsx";
 import './css/sidebar.css'
 
@@ -29,7 +29,7 @@ export function TabsNav() {
                     ))}
                 </TabPanel>
                 <TabPanel value="test">
-                    {chillPlaces.map((place, index) => (
+                    {istanbulBurgerList.map((place, index) => (
                         <Place
                             key={index}
                             bookmarkName={place.name}
