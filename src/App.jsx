@@ -1,22 +1,22 @@
-import Map from './components/map.jsx';
-import './App.css';
-import SideBar from "./components/sidebar.jsx";
-
-import React from 'react';
-import './App.css'; // Assuming your CSS file where styles are defined
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Homepage from "./pages/Homepage.jsx";
+import Places from "./pages/Places.jsx";
+import PlaceDetail from "./pages/PlaceDetail.jsx";
+import ErrorPage from "./pages/ErrorPage.jsx";
+import ErrorBoundary from "./pages/ErrorBoundary.jsx";
 
 function App() {
     return (
-        <div className="App">
-            <div className="main">
-                <div className="map">
-                    <Map/>
-                </div>
-                <div className="sidebar">
-                    <SideBar/>
-                </div>
-            </div>
-        </div>
+        <Router>
+            <ErrorBoundary>
+                <Routes>
+                    <Route path="/" element={<Homepage />} />
+                    <Route path="/places" element={<Places />} />
+                    <Route path="/places/:place-slug" element={<PlaceDetail />} />
+                    <Route path="*" element={<ErrorPage />} />
+                </Routes>
+            </ErrorBoundary>
+        </Router>
     );
 }
 

@@ -41,6 +41,7 @@ const CustomPopup = ({ name, address, date, rating, tag }) => {
                     ))}
                 </div>
             </div>
+
         </div>
     );
 };
