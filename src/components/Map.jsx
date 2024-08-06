@@ -27,7 +27,7 @@ export default function Map() {
 
                 map.current = new maptilersdk.Map({
                     container: mapContainer.current,
-                    style: data, // Assuming 'data' contains the style JSON directly
+                    style: data,
                     center: [ist.lng, ist.lat],
                     zoom: zoom
                 });
