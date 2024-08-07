@@ -1,5 +1,3 @@
-import {toGo, istanbulBurgerList, chillPlaces} from "../PlacesData.jsx";
-import Place from "../components/Place.jsx";
 import {Outlet, useNavigate} from "react-router-dom";
 import {CustomNavbar} from "../components/CustomNavbar.jsx";
 import '../styles/places.css'

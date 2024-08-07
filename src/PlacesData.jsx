@@ -1,4 +1,4 @@
-export const toGo = [
+const PLACES_DATA = [
     {
         slug: 'dolmabahce-sarayi',
         name: 'Dolmabahçe Sarayı',
@@ -10,9 +10,6 @@ export const toGo = [
         longtitude: '29.00084510262412',
         status: 'Gone'
     },
-];
-
-export const chillPlaces = [
     {
         slug: 'vapur-kafe-besiktas',
         name: 'Vapur Kafe beşiktaş İskelesi',
@@ -24,9 +21,6 @@ export const chillPlaces = [
         longtitude: '29.008047484170998',
         status: 'To Go'
     },
-];
-
-export const istanbulBurgerList = [
     {
         slug: 'zula-vadistanbul',
         name: 'Zula Vadistanbul',
@@ -37,5 +31,7 @@ export const istanbulBurgerList = [
         latitude: '41.1053739761213',
         longtitude: '28.986617726983777',
         status: 'To Go'
-    },
+    }
 ];
+
+export default PLACES_DATA

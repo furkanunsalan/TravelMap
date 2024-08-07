@@ -96,7 +96,7 @@ function PlaceDetail({ request, param }) {
     }, [placeDetails]);
 
     if (!placeDetails) {
-        return <div className="flex items-center justify-center">Loading...</div>;
+        return <div className="flex items-center justify-center">Map Loading...</div>;
     }
 
     return (

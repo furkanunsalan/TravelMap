@@ -3,7 +3,7 @@ import * as maptilersdk from '@maptiler/sdk';
 import "@maptiler/sdk/dist/maptiler-sdk.css";
 import '../styles/map.css';
 import { useEffect, useRef, useState } from "react";
-import { toGo, chillPlaces, istanbulBurgerList } from '../PlacesData.jsx';
+import PLACES_DATA from '../PlacesData.jsx';
 import CustomPopup from "./CustomPopup.jsx";
 
 export default function Map() {
@@ -32,9 +32,7 @@ export default function Map() {
                     zoom: zoom
                 });
 
-                const allPlaces = [...toGo, ...istanbulBurgerList, ...chillPlaces]
-
-                allPlaces.map(place => {
+                PLACES_DATA.map(place => {
                     const latitude = parseFloat(place.latitude);
                     const longitude = parseFloat(place.longtitude);
 
