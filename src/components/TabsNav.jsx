@@ -28,9 +28,7 @@ export function TabsNav() {
                             bookmarkName={place.name}
                             address={place.address}
                             date={place.date}
-                            onClick={() => navigate(`/places/${place.slug}`, {
-                                state: place
-                            })}
+                            onClick={() => navigate(`/places/${place.slug}`)}
                         />
                     ))}
                 </TabPanel>
@@ -42,9 +40,7 @@ export function TabsNav() {
                             bookmarkName={place.name}
                             address={place.address}
                             date={place.date}
-                            onClick={() => navigate(`/places/${place.slug}`, {
-                                state: place
-                            })}
+                            onClick={() => navigate(`/places/${place.slug}`)}
                         />
                     ))}
                 </TabPanel>
