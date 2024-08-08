@@ -37,7 +37,6 @@ function PlaceDetail() {
                 }
 
                 const data = await response.json();
-                console.log('Map style data:', data);
 
                 map.current = new maptilersdk.Map({
                     container: mapContainer.current,
