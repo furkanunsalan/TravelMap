@@ -1,8 +1,22 @@
+import { Link } from 'react-router-dom';
+
 function ErrorPage() {
     return (
-        <h2 className="m-auto text-center">
-            Not found! Could not find resource or page.
-        </h2>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4 py-8">
+            <div className="max-w-md text-center">
+                <h1 className="text-5xl font-extrabold text-red-600">404</h1>
+                <h2 className="text-2xl font-semibold text-gray-800 mt-2">Page Not Found</h2>
+                <p className="mt-4 text-lg text-gray-600">Oops! The page you’re looking for doesn’t exist.</p>
+                <div className="mt-8">
+                    <Link to="/" className="inline-block px-6 py-3 bg-gray-800 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 transition duration-300 ease-in-out">
+                        Go to Homepage
+                    </Link>
+                    <Link to="/places" className="inline-block px-6 py-3 ml-4 bg-gray-600 text-white font-medium rounded-lg shadow-md hover:bg-gray-700 transition duration-300 ease-in-out">
+                        View Places
+                    </Link>
+                </div>
+            </div>
+        </div>
     );
 }
 

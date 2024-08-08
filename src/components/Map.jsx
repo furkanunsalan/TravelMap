@@ -2,15 +2,16 @@ import ReactDOMServer from 'react-dom/server';
 import * as maptilersdk from '@maptiler/sdk';
 import "@maptiler/sdk/dist/maptiler-sdk.css";
 import '../styles/map.css';
-import { useEffect, useRef, useState } from "react";
-import PLACES_DATA from '../PlacesData.jsx';
+import {useContext, useEffect, useRef, useState} from "react";
 import CustomPopup from "./CustomPopup.jsx";
+import {PlaceContext} from "../store/place-context.jsx";
 
 export default function Map() {
     const mapContainer = useRef(null);
     const map = useRef(null);
     const ist = { lng: 28.974969, lat: 41.086325 };
     const [zoom] = useState(10);
+    const {places} = useContext(PlaceContext)
 
     useEffect(() => {
         if (map.current) return; // stops map from initializing more than once
@@ -32,7 +33,7 @@ export default function Map() {
                     zoom: zoom
                 });
 
-                PLACES_DATA.map(place => {
+                places.map(place => {
                     const latitude = parseFloat(place.latitude);
                     const longitude = parseFloat(place.longtitude);
 

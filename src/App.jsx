@@ -4,19 +4,22 @@ import Places from "./pages/Places.jsx";
 import PlaceDetail from "./pages/PlaceDetail.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
 import ErrorBoundary from "./pages/ErrorBoundary.jsx";
+import PlaceContextProvider from "./store/place-context.jsx";
 
 function App() {
     return (
-        <Router>
-            <ErrorBoundary>
-                <Routes>
-                    <Route path="/" element={<Homepage />} />
-                    <Route path="/places" element={<Places />} />
-                    <Route path="/places/:place-slug" element={<PlaceDetail />} />
-                    <Route path="*" element={<ErrorPage />} />
-                </Routes>
-            </ErrorBoundary>
-        </Router>
+        <PlaceContextProvider>
+            <Router>
+                <ErrorBoundary>
+                    <Routes>
+                        <Route path="/" element={<Homepage />} />
+                        <Route path="/places" element={<Places />} />
+                        <Route path="/places/:place-slug" element={<PlaceDetail />} />
+                        <Route path="*" element={<ErrorPage />} />
+                    </Routes>
+                </ErrorBoundary>
+            </Router>
+        </PlaceContextProvider>
     );
 }
 

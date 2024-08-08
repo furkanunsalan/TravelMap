@@ -19,6 +19,7 @@ Welcome to the Travel Map Website! This project is a personal tool to track and 
 - **MapTiler SDK:** For map rendering and interaction.
 - **Vite:** For development and build tooling.
 - **Vercel:** For deployment.
+- **Firebase:** Database for storing places online.
 
 ## Setup Instructions
 
@@ -26,6 +27,7 @@ Welcome to the Travel Map Website! This project is a personal tool to track and 
 
 - Node.js (v16 or later)
 - npm or yarn
+- Vercel CLI
 
 ### Installation
 
@@ -50,14 +52,14 @@ Welcome to the Travel Map Website! This project is a personal tool to track and 
 
     ```env
     VITE_API_KEY=your_maptiler_api_key
+    FIREBASE_SERVICE_ACCOUNT=firebase_service_account_credential
     ```
 
 4. **Run the Development Server**
 
     ```bash
-    npm run dev
-    # or
-    yarn dev
+    vercel dev
+    # "npm run dev" should also work but backend won't work in that case
     ```
 
    Open `http://localhost:3000` in your browser to view the application.

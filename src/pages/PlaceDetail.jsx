@@ -1,39 +1,35 @@
-import { useLocation, useParams } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useParams, Navigate } from "react-router-dom";
+import { useContext, useEffect, useRef, useState } from "react";
 import * as maptilersdk from '@maptiler/sdk';
 import "@maptiler/sdk/dist/maptiler-sdk.css";
 import CustomPopup from "../components/CustomPopup.jsx";
 import ReactDOMServer from "react-dom/server";
 import { CustomNavbar } from "../components/CustomNavbar.jsx";
-import { getPlaceBySlug } from '../../util/placesHelper.js'; // Import the helper function
+import { PlaceContext } from "../store/place-context.jsx";
 
-function PlaceDetail({ request, param }) {
+function PlaceDetail() {
     const { 'place-slug': placeSlug } = useParams();
     const [placeDetails, setPlaceDetails] = useState();
-
+    const [notFound, setNotFound] = useState(false); // State to track if place is not found
     const mapContainer = useRef(null);
     const map = useRef(null);
 
-    useEffect(() => {
-        const fetchPlaceDetails = () => {
-            const place = getPlaceBySlug(placeSlug);
-            if (place) {
-                setPlaceDetails(place);
-            } else {
-                console.error('Place not found');
-            }
-        };
-
-        fetchPlaceDetails();
-    }, [placeSlug]);
+    const { getPlaceBySlug } = useContext(PlaceContext);
 
     useEffect(() => {
-        if (map.current || !placeDetails) return; // stops map from initializing more than once or if placeDetails is not loaded
+        const place = getPlaceBySlug(placeSlug);
+        if (place) {
+            setPlaceDetails(place);
+        } else {
+            setNotFound(true); // Set notFound state to true
+        }
+    }, [placeSlug, getPlaceBySlug]);
+
+    useEffect(() => {
+        if (map.current || !placeDetails) return; // Stops map from initializing more than once or if placeDetails is not loaded
 
         const fetchMapData = async () => {
             try {
-                console.log('Item details:', placeDetails);
-
                 const response = await fetch(`/api/map-tiler?lng=${placeDetails.longtitude}&lat=${placeDetails.latitude}`);
 
                 if (!response.ok) {
@@ -79,7 +75,7 @@ function PlaceDetail({ request, param }) {
                     color: placeDetails.tag === 'Burger' ? "#F57F4F" : placeDetails.tag === 'ToGo' ? "#4A90E2" : placeDetails.tag === 'Chill' ? "#B2D8B2" : "#000000"})
                     .setLngLat([placeDetails.longtitude, placeDetails.latitude])
                     .addTo(map.current)
-                    .setPopup(new maptilersdk.Popup().setHTML(popupContent))
+                    .setPopup(new maptilersdk.Popup().setHTML(popupContent));
 
                 function rotateCamera(timestamp) {
                     if (map.current) {
@@ -95,14 +91,19 @@ function PlaceDetail({ request, param }) {
         fetchMapData();
     }, [placeDetails]);
 
+    if (notFound) {
+        // Redirect to the NotFoundPage component
+        return <Navigate to="/not-found" />;
+    }
+
     if (!placeDetails) {
-        return <div className="flex items-center justify-center">Map Loading...</div>;
+        return <div className="flex items-center justify-center">Loading...</div>;
     }
 
     return (
-        <div>
+        <div className="w-1/2 mx-auto mt-5">
             <CustomNavbar />
-            <div className="relative w-1/2 h-96 mx-auto mt-5">
+            <div className="relative h-96">
                 <div ref={mapContainer} className="w-full h-full rounded-2xl" />
             </div>
             <h1 className="text-center text-xl font-bold mt-5">{placeDetails.name}</h1>
