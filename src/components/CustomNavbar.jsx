@@ -5,7 +5,7 @@ import {
     Typography,
     Button,
     MenuItem,
-    IconButton,
+    IconButton, Collapse,
 } from "@material-tailwind/react";
 import {
     Bars2Icon,
@@ -99,9 +99,9 @@ export function CustomNavbar() {
                     <span>Submit Place</span>
                 </Button>
             </div>
-            <MobileNav open={isNavOpen} className="overflow-scroll">
+            <Collapse open={isNavOpen} className="overflow-scroll">
                 <NavList />
-            </MobileNav>
+            </Collapse>
         </Navbar>
 
     );

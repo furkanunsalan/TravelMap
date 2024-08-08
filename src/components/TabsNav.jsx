@@ -27,8 +27,8 @@ export function TabsNav() {
             </TabsHeader>
             <TabsBody>
                 <TabPanel value="html">
-                    {placesToGo.length === 0 ? null : (
-                        placesToGo.map((place, index) => (
+                    {placesToGo.length > 0 && <h1 className="text-center text-xl">Places I Have Visited</h1>}
+                    {placesToGo.map((place, index) => (
                             <Place
                                 key={index}
                                 bookmarkName={place.name}
@@ -36,8 +36,7 @@ export function TabsNav() {
                                 date={place.date}
                                 onClick={() => navigate(`/places/${place.slug}`)}
                             />
-                        ))
-                    )}
+                        ))}
                 </TabPanel>
                 <TabPanel value="test">
                     {placesBurger.length > 0 && <h1 className="text-center text-xl">Burger Places</h1>}
