@@ -1,6 +1,5 @@
 {
   "routes": [
-    { "src":  "/places", "dest": "/"},
-    { "src":  "/places/(.*)", "dest": "/"}
+    { "src": "/places/(.*)", "dest": "/places/$1" }
   ]
 }

@@ -10,14 +10,12 @@ function App() {
     return (
         <PlaceContextProvider>
             <Router>
-                <ErrorBoundary>
                     <Routes>
                         <Route path="/" element={<Homepage />} />
                         <Route path="/places" element={<Places />} />
                         <Route path="/places/:place-slug" element={<PlaceDetail />} />
                         <Route path="*" element={<ErrorPage />} />
                     </Routes>
-                </ErrorBoundary>
             </Router>
         </PlaceContextProvider>
     );

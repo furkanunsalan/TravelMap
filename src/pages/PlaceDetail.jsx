@@ -1,4 +1,4 @@
-import { useParams, Navigate } from "react-router-dom";
+import {Navigate, useNavigate, useParams} from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
 import * as maptilersdk from '@maptiler/sdk';
 import "@maptiler/sdk/dist/maptiler-sdk.css";
@@ -6,22 +6,23 @@ import CustomPopup from "../components/CustomPopup.jsx";
 import ReactDOMServer from "react-dom/server";
 import { CustomNavbar } from "../components/CustomNavbar.jsx";
 import { PlaceContext } from "../store/place-context.jsx";
+import Loading from "../components/Loading.jsx";
 
 function PlaceDetail() {
     const { 'place-slug': placeSlug } = useParams();
     const [placeDetails, setPlaceDetails] = useState();
-    const [notFound, setNotFound] = useState(false); // State to track if place is not found
+    // const [notFound, setNotFound] = useState(false); // State to track if place is not found
     const mapContainer = useRef(null);
     const map = useRef(null);
 
-    const { getPlaceBySlug } = useContext(PlaceContext);
+    const { getPlaceBySlug, notFound} = useContext(PlaceContext);
 
     useEffect(() => {
         const place = getPlaceBySlug(placeSlug);
         if (place) {
             setPlaceDetails(place);
         } else {
-            setNotFound(true); // Set notFound state to true
+            // setNotFound(true); // Set notFound state to true
         }
     }, [placeSlug, getPlaceBySlug]);
 
@@ -90,13 +91,8 @@ function PlaceDetail() {
         fetchMapData();
     }, [placeDetails]);
 
-    if (notFound) {
-        // Redirect to the NotFoundPage component
-        return <Navigate to="/not-found" />;
-    }
-
     if (!placeDetails) {
-        return <div className="flex items-center justify-center">Loading...</div>;
+        return <Loading/>;
     }
 
     return (
