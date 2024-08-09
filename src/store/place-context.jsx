@@ -5,6 +5,7 @@ import axios from 'axios'; // or you can use fetch API
 export const PlaceContext = createContext({
     places: [],
     getPlaceBySlug: () => {}, // Method to get a place by slug
+    addPlace: () => {}, // Method to add a new place
     loading: false, // Add loading state to context
     notFound: false, // Add notFound state to context
 });
@@ -48,9 +49,22 @@ export default function PlaceContextProvider({ children }) {
         return place;
     };
 
+    // Method to add a new place
+    const addPlace = async (newPlace) => {
+        try {
+            const response = await axios.post('/api/add-place', newPlace); // Adjust the URL to your serverless function endpoint
+            if (response.status === 200) {
+                setPlaces(prevPlaces => [...prevPlaces, response.data]);
+            }
+        } catch (error) {
+            console.error('Error adding place:', error);
+        }
+    };
+
     const ctxValue = {
         places,
         getPlaceBySlug, // Provide the method in context
+        addPlace, // Provide the addPlace method in context
         loading, // Provide the loading state in context
         notFound, // Provide the notFound state in context
     };

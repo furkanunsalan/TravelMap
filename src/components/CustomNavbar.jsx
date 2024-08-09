@@ -60,7 +60,7 @@ export function CustomNavbar() {
 
 
     const navigateSubmit = () => {
-        navigate('/')
+        navigate('/submit')
     }
 
     const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);

@@ -5,6 +5,7 @@ import PlaceDetail from "./pages/PlaceDetail.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
 import ErrorBoundary from "./pages/ErrorBoundary.jsx";
 import PlaceContextProvider from "./store/place-context.jsx";
+import SubmitPage from "./pages/SubmitPage.jsx";
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
                         <Route path="/" element={<Homepage />} />
                         <Route path="/places" element={<Places />} />
                         <Route path="/places/:place-slug" element={<PlaceDetail />} />
+                        <Route path="/submit" element={<SubmitPage />} />
                         <Route path="*" element={<ErrorPage />} />
                     </Routes>
             </Router>
