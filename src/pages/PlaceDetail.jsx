@@ -2,7 +2,6 @@ import {Navigate, useNavigate, useParams} from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
 import * as maptilersdk from '@maptiler/sdk';
 import "@maptiler/sdk/dist/maptiler-sdk.css";
-import CustomPopup from "../components/CustomPopup.jsx";
 import ReactDOMServer from "react-dom/server";
 import { CustomNavbar } from "../components/CustomNavbar.jsx";
 import { PlaceContext } from "../store/place-context.jsx";
@@ -31,7 +30,7 @@ function PlaceDetail() {
 
         const fetchMapData = async () => {
             try {
-                const response = await fetch(`/api/map-tiler?lng=${placeDetails.longtitude}&lat=${placeDetails.latitude}`);
+                const response = await fetch(`/api/map-tiler?lng=${placeDetails.longitude}&lat=${placeDetails.latitude}`);
 
                 if (!response.ok) {
                     throw new Error(`Network response was not ok: ${response.statusText}`);
@@ -42,7 +41,7 @@ function PlaceDetail() {
                 map.current = new maptilersdk.Map({
                     container: mapContainer.current,
                     style: data,
-                    center: [placeDetails.longtitude, placeDetails.latitude],
+                    center: [placeDetails.longitude, placeDetails.latitude],
                     zoom: 15.5,
                     pitch: 45,
                     interactive: false,
@@ -60,22 +59,11 @@ function PlaceDetail() {
                     rotateCamera(0);
                 });
 
-                const popupContent = ReactDOMServer.renderToString(
-                    <CustomPopup
-                        slug={placeDetails.slug}
-                        name={placeDetails.name}
-                        address={placeDetails.address}
-                        date={placeDetails.date}
-                        rating={placeDetails.rating}
-                        tag={placeDetails.tag}
-                    />
-                );
-
                 new maptilersdk.Marker({
                     color: placeDetails.tag === 'Burger' ? "#F57F4F" : placeDetails.tag === 'ToGo' ? "#4A90E2" : placeDetails.tag === 'Chill' ? "#B2D8B2" : "#000000"})
-                    .setLngLat([placeDetails.longtitude, placeDetails.latitude])
+                    .setLngLat([placeDetails.longitude, placeDetails.latitude])
                     .addTo(map.current)
-                    .setPopup(new maptilersdk.Popup().setHTML(popupContent));
+
 
                 function rotateCamera(timestamp) {
                     if (map.current) {

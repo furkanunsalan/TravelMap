@@ -1,10 +1,10 @@
-import ReactDOMServer from 'react-dom/server';
+// Map.jsx
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import * as maptilersdk from '@maptiler/sdk';
 import "@maptiler/sdk/dist/maptiler-sdk.css";
 import '../styles/map.css';
-import { useContext, useEffect, useRef, useState } from "react";
-import CustomPopup from "./CustomPopup.jsx";
-import { PlaceContext } from "../store/place-context.jsx";
+import { PlaceContext } from '../store/place-context.jsx';
+import { useNavigate } from 'react-router-dom';
 
 // Access the environment variable for MapTiler API key
 const apiKey = import.meta.env.VITE_API_KEY;
@@ -14,16 +14,11 @@ export default function Map() {
     const map = useRef(null);
     const ist = { lng: 28.974969, lat: 41.086325 };
     const [zoom] = useState(10);
-    maptilersdk.config.apiKey = import.meta.env.VITE_API_KEY
+    maptilersdk.config.apiKey = import.meta.env.VITE_API_KEY;
     const { places } = useContext(PlaceContext);
+    const navigate = useNavigate(); // Get the navigate function
 
     useEffect(() => {
-        // I have no idea why but removing the following line fixed the problem of
-        // not initializing with markers but caused double initialization
-
-        // if (map.current) return;
-
-
         const fetchMapData = async () => {
             try {
                 const response = await fetch(`/api/map-tiler?lng=${ist.lng}&lat=${ist.lat}&zoom=${zoom}`);
@@ -45,19 +40,36 @@ export default function Map() {
                 // Add markers to the map
                 places.forEach(place => {
                     const latitude = parseFloat(place.latitude);
-                    const longitude = parseFloat(place.longtitude); // Keeping the typo for now
+                    const longitude = parseFloat(place.longitude);
 
                     if (!isNaN(latitude) && !isNaN(longitude)) {
-                        const popupContent = ReactDOMServer.renderToString(
-                            <CustomPopup
-                                slug={place.slug}
-                                name={place.name}
-                                address={place.address}
-                                date={place.date}
-                                rating={place.rating}
-                                tag={place.tag}
-                            />
-                        );
+                        // Create a custom HTML container for the popup
+                        const popupDiv = document.createElement('div');
+                        popupDiv.innerHTML = `
+                            <div>
+                                <div class="flex items-center mb-2">
+                                    ${place.tag === 'Burger' ? '<span class="text-xl text-orange-500">🍔</span>' : ''}
+                                    ${place.tag === 'Chill' ? '<span class="text-xl text-brown-300">🛋️</span>' : ''}
+                                    ${place.tag === 'ToGo' ? '<span class="text-xl text-blue-500">📋</span>' : ''}
+                                    <h3 class="text-lg font-semibold ml-2">${place.name}</h3>
+                                </div>
+                                <p class="text-sm mb-2">${place.address}</p>
+                                ${place.tag === 'ToGo' ? '<p class="text-xs mb-2">Looking Forward to Visiting</p>' : `<p class="text-xs mb-2">Latest been there: ${place.date}</p>`}
+                                <div class="flex items-center">
+                                    <span class="font-semibold mr-2">Rating:</span>
+                                    <div class="flex">
+                                        ${Array(place.rating).fill(false).map((_, index) => `<span class="text-yellow-500 text-lg ${index < place.rating ? 'inline-block' : 'text-gray-300'}">★</span>`).join('')}
+                                    </div>
+                                </div>
+                                <button
+                                    class="mt-5 p-2 bg-blue-500 text-white rounded"
+                                    style="cursor: pointer; display: block; margin: 2em auto 0;"
+                                    onclick="window.location.href='/places/${place.slug}'"
+                                >
+                                    Details
+                                </button>
+                            </div>
+                        `;
 
                         new maptilersdk.Marker({
                             color: place.tag === 'Burger' ? "#F57F4F" :
@@ -66,7 +78,7 @@ export default function Map() {
                         })
                             .setLngLat([longitude, latitude])
                             .addTo(map.current)
-                            .setPopup(new maptilersdk.Popup().setHTML(popupContent));
+                            .setPopup(new maptilersdk.Popup().setDOMContent(popupDiv));
                     }
                 });
             } catch (error) {
@@ -75,7 +87,7 @@ export default function Map() {
         };
 
         fetchMapData();
-    }, [ist.lng, ist.lat, zoom, places]); // Removed PlaceContext from dependencies
+    }, [ist.lng, ist.lat, zoom, places, navigate]); // Added navigate to dependencies
 
     return (
         <div className="relative w-full h-screen">

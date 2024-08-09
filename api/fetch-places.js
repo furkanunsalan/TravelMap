@@ -1,5 +1,5 @@
 // api/fetch-places.js
-import { db } from './firebase.js'
+import { db } from '../util/firebase.js'
 
 export default async (req, res) => {
     try {

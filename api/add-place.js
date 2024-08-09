@@ -19,7 +19,7 @@ export default async function handler(req, res) {
             const newPlace = req.body;
 
             // Validate newPlace object structure if needed
-            if (!newPlace.slug || !newPlace.name || !newPlace.latitude || !newPlace.longtitude) {
+            if (!newPlace.slug || !newPlace.name || !newPlace.latitude || !newPlace.longitude) {
                 return res.status(400).json({ message: 'Missing required fields' });
             }
 

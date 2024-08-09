@@ -11,13 +11,30 @@ function SubmitPlace() {
         rating: '',
         tag: '', // Changed to string
         latitude: '',
-        longtitude: '',
+        longitude: '',
         status: '', // Changed to string
     });
+    const [userType, setUserType] = useState('guest'); // 'admin' or 'guest'
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [authError, setAuthError] = useState('');
+
+    // Function to convert Turkish characters to English equivalents
+    const convertTurkishChars = (str) => {
+        const turkishToEnglishMap = {
+            'Ç': 'C', 'Ğ': 'G', 'İ': 'I', 'ı': 'i', 'Ö': 'O', 'Ş': 'S', 'Ü': 'U',
+            'ç': 'c', 'ğ': 'g', 'ö': 'o', 'ş': 's', 'ü': 'u'
+        };
+
+        return str.split('').map(char => turkishToEnglishMap[char] || char).join('');
+    };
 
     // Function to convert a string to a slug
     const generateSlug = (name) => {
-        return name
+        // Convert Turkish characters first
+        const normalizedName = convertTurkishChars(name);
+
+        return normalizedName
             .toLowerCase()
             .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric characters with hyphens
             .replace(/^-+|-+$/g, ''); // Remove leading and trailing hyphens
@@ -49,8 +66,11 @@ function SubmitPlace() {
         }));
     };
 
-    // Handle form submission
-    const handleSubmit = (e) => {
+    const handleUserTypeChange = (e) => {
+        setUserType(e.target.value);
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Generate slug from the name
@@ -70,8 +90,51 @@ function SubmitPlace() {
             rating // Always include rating
         };
 
-        // Call the addPlace function from context
-        addPlace(dataToSend);
+        if (userType === 'admin') {
+            try {
+                const response = await fetch('/api/authenticate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
+                const data = await response.json();
+
+                console.log('Response data:', data);
+
+                if (response.ok) {
+                    // Authentication successful
+                    addPlace(dataToSend); // Call the addPlace function from context
+                    alert('Place added successfully');
+                } else {
+                    // Authentication failed
+                    setAuthError(data.error);
+                }
+            } catch (error) {
+                setAuthError('An error occurred while authenticating.');
+            }
+        } else {
+            try {
+                /*await fetch('/api/send-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        to: 'hi@furkanunsalan.dev',
+                        subject: 'New Place Submission',
+                        text: JSON.stringify(dataToSend, null, 2)
+                    }),
+                });*/
+                // not minding the send email feature for now
+                console.log(dataToSend)
+
+                alert('Email sent successfully');
+            } catch (error) {
+                alert('An error occurred while sending the email.');
+            }
+        }
 
         // Reset the form
         setFormData({
@@ -81,9 +144,12 @@ function SubmitPlace() {
             rating: '',
             tag: '',
             latitude: '',
-            longtitude: '',
+            longitude: '',
             status: '',
         });
+        setEmail('');
+        setPassword('');
+        setAuthError('');
     };
 
     const statusOptions = [
@@ -98,9 +164,53 @@ function SubmitPlace() {
     ];
 
     return (
-        <div className="p-4 max-w-md mx-auto">
+        <div className="p-4 max-w-md mx-auto h-screen overflow-auto">
             <h2 className="text-2xl font-bold mb-4">Add New Place</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="flex flex-col">
+                    <label className="mb-1 font-medium" htmlFor="userType">User Type</label>
+                    <select
+                        id="userType"
+                        name="userType"
+                        value={userType}
+                        onChange={handleUserTypeChange}
+                        className="border p-2 rounded"
+                    >
+                        <option value="guest">Guest</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+
+                {userType === 'admin' && (
+                    <>
+                        <div className="flex flex-col">
+                            <label className="mb-1 font-medium" htmlFor="email">Email</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="border p-2 rounded"
+                                required
+                            />
+                        </div>
+
+                        <div className="flex flex-col">
+                            <label className="mb-1 font-medium" htmlFor="password">Password</label>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="border p-2 rounded"
+                                required
+                            />
+                        </div>
+                    </>
+                )}
+
                 <div className="flex flex-col">
                     <label className="mb-1 font-medium" htmlFor="name">Name</label>
                     <input
@@ -154,12 +264,12 @@ function SubmitPlace() {
                 </div>
 
                 <div className="flex flex-col">
-                    <label className="mb-1 font-medium" htmlFor="longtitude">Longitude</label>
+                    <label className="mb-1 font-medium" htmlFor="longitude">Longitude</label>
                     <input
                         type="text"
-                        id="longtitude"
-                        name="longtitude"
-                        value={formData.longtitude}
+                        id="longitude"
+                        name="longitude"
+                        value={formData.longitude}
                         onChange={handleChange}
                         className="border p-2 rounded"
                         required
@@ -215,6 +325,12 @@ function SubmitPlace() {
                 >
                     Submit
                 </button>
+
+                {authError && (
+                    <div className="text-red-500 mt-4">
+                        {authError}
+                    </div>
+                )}
             </form>
         </div>
     );
