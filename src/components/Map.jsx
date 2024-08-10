@@ -1,4 +1,3 @@
-// Map.jsx
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import * as maptilersdk from '@maptiler/sdk';
 import "@maptiler/sdk/dist/maptiler-sdk.css";
@@ -11,16 +10,16 @@ const apiKey = import.meta.env.VITE_API_KEY;
 export default function Map() {
     const mapContainer = useRef(null);
     const map = useRef(null);
-    const ist = { lng: 28.974969, lat: 41.086325 };
+    const [center, setCenter] = useState({ lng: 28.974969, lat: 41.086325 }); // State for map center
     const [zoom] = useState(10);
-    maptilersdk.config.apiKey = import.meta.env.VITE_API_KEY;
+    maptilersdk.config.apiKey = apiKey;
     const { places } = useContext(PlaceContext);
-    const navigate = useNavigate(); // Get the navigate function
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchMapData = async () => {
             try {
-                const response = await fetch(`/api/map-tiler?lng=${ist.lng}&lat=${ist.lat}&zoom=${zoom}`);
+                const response = await fetch(`/api/map-tiler?lng=${center.lng}&lat=${center.lat}&zoom=${zoom}`);
 
                 if (!response.ok) {
                     throw new Error(`Network response was not ok: ${response.statusText}`);
@@ -32,7 +31,7 @@ export default function Map() {
                 map.current = new maptilersdk.Map({
                     container: mapContainer.current,
                     style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${apiKey}`,
-                    center: [ist.lng, ist.lat],
+                    center: [center.lng, center.lat],
                     zoom: zoom
                 });
 
@@ -70,8 +69,7 @@ export default function Map() {
                             </div>
                         `;
 
-
-                        new maptilersdk.Marker({
+                        const marker = new maptilersdk.Marker({
                             color: place.tag === 'Burger' ? "#F57F4F" :
                                 place.tag === 'ToGo' ? "#4A90E2" :
                                     place.tag === 'Chill' ? "#B2D8B2" : "#000000"
@@ -79,6 +77,16 @@ export default function Map() {
                             .setLngLat([longitude, latitude])
                             .addTo(map.current)
                             .setPopup(new maptilersdk.Popup().setDOMContent(popupDiv));
+
+                        // Add click event to the marker to smoothly center the map on it
+                        marker.getElement().addEventListener('click', () => {
+                            map.current.flyTo({
+                                center: [longitude, latitude],
+                                essential: true, // This makes the animation essential for accessibility
+                                zoom: zoom,
+                                duration: 1000 // Duration of the animation in milliseconds
+                            });
+                        });
                     }
                 });
             } catch (error) {
@@ -87,7 +95,7 @@ export default function Map() {
         };
 
         fetchMapData();
-    }, [ist.lng, ist.lat, zoom, places, navigate]); // Added navigate to dependencies
+    }, [center.lng, center.lat, zoom, places, navigate]);
 
     return (
         <div className="relative w-full h-screen">
