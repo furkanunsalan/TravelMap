@@ -26,7 +26,7 @@ Welcome to the Travel Map Website! This project is a personal tool to track and 
 ### Prerequisites
 
 - Node.js (v16 or later)
-- npm or yarn
+- npm
 - Vercel CLI
 
 ### Installation
@@ -42,8 +42,6 @@ Welcome to the Travel Map Website! This project is a personal tool to track and 
 
     ```bash
     npm install
-    # or
-    yarn install
     ```
 
 3. **Set Up Environment Variables**
@@ -53,6 +51,8 @@ Welcome to the Travel Map Website! This project is a personal tool to track and 
     ```env
     VITE_API_KEY=your_maptiler_api_key
     FIREBASE_SERVICE_ACCOUNT=firebase_service_account_credential
+    AUTH_EMAIL=email_for_submit_page_admin
+    AUTH_PASSWORD=password_for_submit_page_admin
     ```
 
 4. **Run the Development Server**

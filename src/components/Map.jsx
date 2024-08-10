@@ -46,30 +46,31 @@ export default function Map() {
                         // Create a custom HTML container for the popup
                         const popupDiv = document.createElement('div');
                         popupDiv.innerHTML = `
-                            <div>
-                                <div class="flex items-center mb-2">
+                            <div style="text-align: center; font-family: Arial, sans-serif; color: #333;">
+                                <div class="flex items-center justify-center mb-2">
                                     ${place.tag === 'Burger' ? '<span class="text-xl text-orange-500">🍔</span>' : ''}
-                                    ${place.tag === 'Chill' ? '<span class="text-xl text-brown-300">🛋️</span>' : ''}
+                                    ${place.tag === 'Chill' ? '<span class="text-xl text-brown-300">☕️</span>' : ''}
                                     ${place.tag === 'ToGo' ? '<span class="text-xl text-blue-500">📋</span>' : ''}
                                     <h3 class="text-lg font-semibold ml-2">${place.name}</h3>
                                 </div>
                                 <p class="text-sm mb-2">${place.address}</p>
                                 ${place.tag === 'ToGo' ? '<p class="text-xs mb-2">Looking Forward to Visiting</p>' : `<p class="text-xs mb-2">Latest been there: ${place.date}</p>`}
-                                <div class="flex items-center">
+                                <div class="flex items-center justify-center mb-2">
                                     <span class="font-semibold mr-2">Rating:</span>
                                     <div class="flex">
                                         ${Array(place.rating).fill(false).map((_, index) => `<span class="text-yellow-500 text-lg ${index < place.rating ? 'inline-block' : 'text-gray-300'}">★</span>`).join('')}
                                     </div>
                                 </div>
                                 <button
-                                    class="mt-5 p-2 bg-blue-500 text-white rounded"
-                                    style="cursor: pointer; display: block; margin: 2em auto 0;"
+                                    class="mt-4 p-2 text-white rounded"
+                                    style="cursor: pointer; display: block; margin: 1em auto 0; background-color: ${place.tag === 'Burger' ? '#F57F4F' : place.tag === 'Chill' ? '#B2D8B2' : place.tag === 'ToGo' ? '#4A90E2' : '#007BFF'};"
                                     onclick="window.location.href='/places/${place.slug}'"
                                 >
                                     Details
                                 </button>
                             </div>
                         `;
+
 
                         new maptilersdk.Marker({
                             color: place.tag === 'Burger' ? "#F57F4F" :
