@@ -2,7 +2,6 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import * as maptilersdk from '@maptiler/sdk';
 import "@maptiler/sdk/dist/maptiler-sdk.css";
-import '../styles/map.css';
 import { PlaceContext } from '../store/place-context.jsx';
 import { useNavigate } from 'react-router-dom';
 

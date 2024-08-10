@@ -6,7 +6,6 @@ import {
     TabPanel,
 } from "@material-tailwind/react";
 import Place from "./Place.jsx";
-import '../styles/sidebar.css';
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { PlaceContext } from "../store/place-context.jsx";
@@ -20,15 +19,16 @@ export function TabsNav() {
     const placesChill = places.filter(place => place.tag === 'Chill');
 
     return (
-        <Tabs value="html" className="m-5">
-            <TabsHeader>
-                <Tab value="html">To Go</Tab>
-                <Tab value="test">Gone</Tab>
-            </TabsHeader>
-            <TabsBody>
-                <TabPanel value="html">
-                    {placesToGo.length > 0 && <h1 className="text-center text-xl">Places I Have Visited</h1>}
-                    {placesToGo.map((place, index) => (
+        <div className="p-5"> {/* Added padding for better spacing */}
+            <Tabs value="to-go" className="w-full">
+                <TabsHeader>
+                    <Tab value="to-go">To Go</Tab>
+                    <Tab value="gone">Gone</Tab>
+                </TabsHeader>
+                <TabsBody>
+                    <TabPanel value="to-go">
+                        {placesToGo.length > 0 && <h1 className="text-center text-xl font-bold mb-4">Places I Plan to Visit</h1>}
+                        {placesToGo.map((place, index) => (
                             <Place
                                 key={index}
                                 bookmarkName={place.name}
@@ -37,30 +37,31 @@ export function TabsNav() {
                                 onClick={() => navigate(`/places/${place.slug}`)}
                             />
                         ))}
-                </TabPanel>
-                <TabPanel value="test">
-                    {placesBurger.length > 0 && <h1 className="text-center text-xl">Burger Places</h1>}
-                    {placesBurger.map((place, index) => (
-                        <Place
-                            key={index}
-                            bookmarkName={place.name}
-                            address={place.address}
-                            date={place.date}
-                            onClick={() => navigate(`/places/${place.slug}`)}
-                        />
-                    ))}
-                    {placesChill.length > 0 && <h1 className="text-center text-xl mt-4">Chill Places</h1>}
-                    {placesChill.map((place, index) => (
-                        <Place
-                            key={index}
-                            bookmarkName={place.name}
-                            address={place.address}
-                            date={place.date}
-                            onClick={() => navigate(`/places/${place.slug}`)}
-                        />
-                    ))}
-                </TabPanel>
-            </TabsBody>
-        </Tabs>
+                    </TabPanel>
+                    <TabPanel value="gone">
+                        {placesBurger.length > 0 && <h1 className="text-center text-xl font-bold mb-4">Burger Places</h1>}
+                        {placesBurger.map((place, index) => (
+                            <Place
+                                key={index}
+                                bookmarkName={place.name}
+                                address={place.address}
+                                date={place.date}
+                                onClick={() => navigate(`/places/${place.slug}`)}
+                            />
+                        ))}
+                        {placesChill.length > 0 && <h1 className="text-center text-xl font-bold mt-4">Chill Places</h1>}
+                        {placesChill.map((place, index) => (
+                            <Place
+                                key={index}
+                                bookmarkName={place.name}
+                                address={place.address}
+                                date={place.date}
+                                onClick={() => navigate(`/places/${place.slug}`)}
+                            />
+                        ))}
+                    </TabPanel>
+                </TabsBody>
+            </Tabs>
+        </div>
     );
 }

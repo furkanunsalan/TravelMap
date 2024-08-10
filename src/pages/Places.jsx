@@ -8,7 +8,7 @@ function Places() {
 
     return(
         <>
-            <h1 className="w-1/2 m-auto mt-10 text-center">
+            <h1 className="w-1/2 m-auto mt-32 md:mt-10 text-center">
                 All the places in my lists
             </h1>
             <div className="w-5/6 m-auto p-2 md:w-1/2">

@@ -321,7 +321,7 @@ function CustomForm() {
 
                 <button
                     type="submit"
-                    className="bg-blue-500 text-white p-2 rounded"
+                    className="bg-blue-500 text-white p-2 rounded w-1/3"
                 >
                     Submit
                 </button>
