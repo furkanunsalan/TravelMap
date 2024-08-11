@@ -10,8 +10,8 @@ const apiKey = import.meta.env.VITE_API_KEY;
 export default function Map() {
     const mapContainer = useRef(null);
     const map = useRef(null);
-    const [center, setCenter] = useState({ lng: 28.974969, lat: 41.086325 }); // State for map center
-    const [zoom] = useState(10);
+    const [center, setCenter] = useState({ lng: 28.9895116, lat: 41.0560071 }); // State for map center
+    const [zoom] = useState(11.5);
     maptilersdk.config.apiKey = apiKey;
     const { places } = useContext(PlaceContext);
     const navigate = useNavigate();
@@ -69,6 +69,8 @@ export default function Map() {
                             </div>
                         `;
 
+                        const popup = new maptilersdk.Popup().setDOMContent(popupDiv)
+
                         const marker = new maptilersdk.Marker({
                             color: place.tag === 'Burger' ? "#F57F4F" :
                                 place.tag === 'ToGo' ? "#4A90E2" :
@@ -76,17 +78,44 @@ export default function Map() {
                         })
                             .setLngLat([longitude, latitude])
                             .addTo(map.current)
-                            .setPopup(new maptilersdk.Popup().setDOMContent(popupDiv));
+                            .setPopup(popup);
 
                         // Add click event to the marker to smoothly center the map on it
                         marker.getElement().addEventListener('click', () => {
                             map.current.flyTo({
                                 center: [longitude, latitude],
                                 essential: true, // This makes the animation essential for accessibility
-                                zoom: zoom,
-                                duration: 1000 // Duration of the animation in milliseconds
+                                zoom: 16,
+                                pitch: 45,
+                                duration: 1500, // Duration of the animation in milliseconds
                             });
+                            map.current.dragPan.disable();
+                            map.current.scrollZoom.disable();
+                            map.current.boxZoom.disable();
+                            map.current.keyboard.disable();
+                            map.current.touchZoomRotate.disable();
+                            map.current.doubleClickZoom.disable();
+                            map.current.touchPitch.disable();
+                            map.current.dragRotate.disable();
                         });
+
+                        popup.on('close', () => {
+                            map.current.flyTo({
+                                center: [longitude, latitude],
+                                essential: true, // This makes the animation essential for accessibility
+                                zoom: zoom,
+                                pitch: 0,
+                                duration: 1500,
+                            })
+                            map.current.dragPan.enable();
+                            map.current.scrollZoom.enable();
+                            map.current.boxZoom.enable();
+                            map.current.keyboard.enable();
+                            map.current.touchZoomRotate.enable();
+                            map.current.doubleClickZoom.enable();
+                            map.current.touchPitch.enable();
+                            map.current.dragRotate.enable();
+                        })
                     }
                 });
             } catch (error) {
