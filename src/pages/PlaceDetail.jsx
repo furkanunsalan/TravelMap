@@ -1,8 +1,7 @@
-import {Navigate, useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
 import * as maptilersdk from '@maptiler/sdk';
 import "@maptiler/sdk/dist/maptiler-sdk.css";
-import ReactDOMServer from "react-dom/server";
 import { CustomNavbar } from "../components/CustomNavbar.jsx";
 import { PlaceContext } from "../store/place-context.jsx";
 import Loading from "../components/Loading.jsx";
@@ -15,8 +14,6 @@ function PlaceDetail() {
     const mapContainer = useRef(null);
     const map = useRef(null);
 
-    const navigate = useNavigate()
-
     const { getPlaceBySlug, notFound} = useContext(PlaceContext);
 
     useEffect(() => {
@@ -25,9 +22,6 @@ function PlaceDetail() {
             setPlaceDetails(place);
         } else {
             // setNotFound(true); // Set notFound state to true
-            if (notFound) {
-                navigate('/not-found')
-            }
         }
     }, [placeSlug, getPlaceBySlug]);
 
