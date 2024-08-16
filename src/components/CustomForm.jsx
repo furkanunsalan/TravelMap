@@ -114,10 +114,22 @@ function CustomForm() {
             }
         } else {
             try {
-                console.log(dataToSend);
-                alert('Email sent successfully');
-                navigate('/'); // Redirect to home page
-                window.location.reload(); // Reload the page
+                const response = await fetch('/api/send-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ formData: dataToSend }),
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Email sent successfully');
+                    navigate('/'); // Redirect to home page
+                    window.location.reload(); // Reload the page
+                } else {
+                    alert('An error occurred while sending the email.');
+                }
             } catch (error) {
                 alert('An error occurred while sending the email.');
             }

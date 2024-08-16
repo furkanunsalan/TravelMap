@@ -52,11 +52,10 @@ export default function Map() {
                                     <h3 class="text-lg font-semibold ml-2">${place.name}</h3>
                                 </div>
                                 <p class="text-sm mb-2">${place.address}</p>
-                                ${place.tag === 'ToGo' ? '<p class="text-xs mb-2">Looking Forward to Visiting</p>' : `<p class="text-xs mb-2">Latest been there: ${place.date}</p>`}
+                                ${place.tag === 'ToGo' ? '<p class="text-xs mb-2">Looking Forward to Visiting</p>' : `<p class="text-xs mb-2">Visited On: ${place.date}</p>`}
                                 <div class="flex items-center justify-center mb-2">
-                                    <span class="font-semibold mr-2">Rating:</span>
                                     <div class="flex">
-                                        ${Array(place.rating).fill(false).map((_, index) => `<span class="text-yellow-500 text-lg ${index < place.rating ? 'inline-block' : 'text-gray-300'}">★</span>`).join('')}
+                                        ${Array(place.rating).fill(false).map((_, index) => `<span class="text-black text-lg ${index < place.rating ? 'inline-block' : 'text-gray-300'}">★</span>`).join('')}
                                     </div>
                                 </div>
                                 <button

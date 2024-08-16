@@ -111,7 +111,7 @@ function PlaceDetail() {
                         ))}
                 </div>
                 <h1 className="text-center text-xl font-bold">{placeDetails.name}</h1>
-                <p className="text-center">Visited on {placeDetails.date}</p>
+                {placeDetails.date && <p className="text-center">Visited on {placeDetails.date}</p>}
                 <div className="text-center mt-5 w-full md:w-2/3 mx-auto">
 
                     {
