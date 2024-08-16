@@ -15,6 +15,8 @@ function PlaceDetail() {
     const mapContainer = useRef(null);
     const map = useRef(null);
 
+    const navigate = useNavigate()
+
     const { getPlaceBySlug, notFound} = useContext(PlaceContext);
 
     useEffect(() => {
@@ -23,6 +25,9 @@ function PlaceDetail() {
             setPlaceDetails(place);
         } else {
             // setNotFound(true); // Set notFound state to true
+            if (notFound) {
+                navigate('/not-found')
+            }
         }
     }, [placeSlug, getPlaceBySlug]);
 

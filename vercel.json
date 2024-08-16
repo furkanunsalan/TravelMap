@@ -3,7 +3,10 @@
     { "src":  "/api/(.*)", "dest": "/api/$1" },
     { "src":  "/", "dest": "/" },
     { "src":  "/submit", "dest": "/" },
+
     { "src":  "/places", "dest": "/"},
-    { "src":  "/places/(.*)", "dest": "/"}
+    { "src":  "/places/(.*)", "dest": "/"},
+
+    { "src":  "/(.*)", "dest": "/404" }
   ]
 }
