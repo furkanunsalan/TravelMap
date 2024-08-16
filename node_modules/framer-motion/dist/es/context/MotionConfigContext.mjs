@@ -3,8 +3,8 @@ import { createContext } from 'react';
 /**
  * @public
  */
-var MotionConfigContext = createContext({
-    transformPagePoint: function (p) { return p; },
+const MotionConfigContext = createContext({
+    transformPagePoint: (p) => p,
     isStatic: false,
     reducedMotion: "never",
 });

@@ -3,7 +3,7 @@
  * persist through server requests. If we need instanced states we
  * could lazy-init via root.
  */
-var globalProjectionState = {
+const globalProjectionState = {
     /**
      * Global flag as to whether the tree has animated since the last time
      * we resized the window

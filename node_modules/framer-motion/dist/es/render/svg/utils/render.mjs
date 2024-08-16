@@ -4,7 +4,7 @@ import { camelCaseAttributes } from './camel-case-attrs.mjs';
 
 function renderSVG(element, renderState, _styleProp, projection) {
     renderHTML(element, renderState, undefined, projection);
-    for (var key in renderState.attrs) {
+    for (const key in renderState.attrs) {
         element.setAttribute(!camelCaseAttributes.has(key) ? camelToDash(key) : key, renderState.attrs[key]);
     }
 }

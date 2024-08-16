@@ -7,7 +7,7 @@ import { isMotionValue } from './is-motion-value.mjs';
  * TODO: Remove and move to library
  */
 function resolveMotionValue(value) {
-    var unwrappedValue = isMotionValue(value) ? value.get() : value;
+    const unwrappedValue = isMotionValue(value) ? value.get() : value;
     return isCustomValue(unwrappedValue)
         ? unwrappedValue.toValue()
         : unwrappedValue;

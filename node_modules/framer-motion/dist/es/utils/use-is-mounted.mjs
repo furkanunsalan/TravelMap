@@ -2,10 +2,10 @@ import { useRef } from 'react';
 import { useIsomorphicLayoutEffect } from './use-isomorphic-effect.mjs';
 
 function useIsMounted() {
-    var isMounted = useRef(false);
-    useIsomorphicLayoutEffect(function () {
+    const isMounted = useRef(false);
+    useIsomorphicLayoutEffect(() => {
         isMounted.current = true;
-        return function () {
+        return () => {
             isMounted.current = false;
         };
     }, []);

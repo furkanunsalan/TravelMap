@@ -1,5 +1,5 @@
 import { createContext } from 'react';
 
-var LayoutGroupContext = createContext({});
+const LayoutGroupContext = createContext({});
 
 export { LayoutGroupContext };

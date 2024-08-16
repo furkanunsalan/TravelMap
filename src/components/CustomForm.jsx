@@ -6,6 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { PlaceContext } from '../store/place-context.jsx';
 import { formatDate } from "../../util/formatDate.js";
 import { generateSlug } from "../../util/generateSlug.js";
+import { motion } from 'framer-motion';
 
 function CustomForm() {
     const { addPlace } = useContext(PlaceContext);
@@ -25,7 +26,7 @@ function CustomForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [authError, setAuthError] = useState('');
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -75,7 +76,6 @@ function CustomForm() {
             return;
         }
 
-        // Conditional validation for date
         if (!isToGo && !formData.date) {
             alert('Date is required unless the status is "ToGo"');
             return;
@@ -164,10 +164,26 @@ function CustomForm() {
     ];
 
     return (
-        <div className="max-w-md mx-auto mt-32 mb-10 md:mb-32 md:mt-10 p-5">
+        <motion.div
+            className="max-w-md mx-auto mt-32 mb-10 md:mb-32 md:mt-10 p-5"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+        >
             <h2 className="text-2xl font-bold mb-4">Add New Place</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="flex flex-col">
+            <motion.form
+                onSubmit={handleSubmit}
+                className="space-y-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+            >
+                <motion.div
+                    className="flex flex-col"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: 0.1 }}
+                >
                     <label className="mb-1 font-medium" htmlFor="userType">User Type</label>
                     <select
                         id="userType"
@@ -179,11 +195,16 @@ function CustomForm() {
                         <option value="guest">Guest</option>
                         <option value="admin">Admin</option>
                     </select>
-                </div>
+                </motion.div>
 
                 {userType === 'admin' && (
                     <>
-                        <div className="flex flex-col">
+                        <motion.div
+                            className="flex flex-col"
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.3, delay: 0.2 }}
+                        >
                             <label className="mb-1 font-medium" htmlFor="email">Email</label>
                             <input
                                 type="email"
@@ -194,9 +215,14 @@ function CustomForm() {
                                 className="border p-2 rounded"
                                 required
                             />
-                        </div>
+                        </motion.div>
 
-                        <div className="flex flex-col">
+                        <motion.div
+                            className="flex flex-col"
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.3, delay: 0.3 }}
+                        >
                             <label className="mb-1 font-medium" htmlFor="password">Password</label>
                             <input
                                 type="password"
@@ -207,11 +233,16 @@ function CustomForm() {
                                 className="border p-2 rounded"
                                 required
                             />
-                        </div>
+                        </motion.div>
                     </>
                 )}
 
-                <div className="flex flex-col">
+                <motion.div
+                    className="flex flex-col"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: 0.4 }}
+                >
                     <label className="mb-1 font-medium" htmlFor="name">Name</label>
                     <input
                         type="text"
@@ -222,9 +253,14 @@ function CustomForm() {
                         className="border p-2 rounded"
                         required
                     />
-                </div>
+                </motion.div>
 
-                <div className="flex flex-col">
+                <motion.div
+                    className="flex flex-col"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: 0.5 }}
+                >
                     <label className="mb-1 font-medium" htmlFor="address">Address</label>
                     <input
                         type="text"
@@ -235,9 +271,14 @@ function CustomForm() {
                         className="border p-2 rounded"
                         required
                     />
-                </div>
+                </motion.div>
 
-                <div className="flex flex-col">
+                <motion.div
+                    className="flex flex-col"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: 0.6 }}
+                >
                     <label className="mb-1 font-medium" htmlFor="status">Status</label>
                     <Select
                         id="status"
@@ -248,9 +289,14 @@ function CustomForm() {
                         className="basic-single-select w-full"
                         classNamePrefix="select"
                     />
-                </div>
+                </motion.div>
 
-                <div className="flex flex-col">
+                <motion.div
+                    className="flex flex-col"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: 0.7 }}
+                >
                     <label className="mb-1 font-medium" htmlFor="date">Date</label>
                     <DatePicker
                         id="date"
@@ -262,9 +308,14 @@ function CustomForm() {
                         placeholderText="dd-mm-yyyy"
                         disabled={formData.status === 'ToGo'} // Disable date picker if status is ToGo
                     />
-                </div>
+                </motion.div>
 
-                <div className="flex flex-col">
+                <motion.div
+                    className="flex flex-col"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: 0.8 }}
+                >
                     <label className="mb-1 font-medium" htmlFor="latitude">Latitude</label>
                     <input
                         type="text"
@@ -275,9 +326,14 @@ function CustomForm() {
                         className="border p-2 rounded"
                         required
                     />
-                </div>
+                </motion.div>
 
-                <div className="flex flex-col">
+                <motion.div
+                    className="flex flex-col"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: 0.9 }}
+                >
                     <label className="mb-1 font-medium" htmlFor="longitude">Longitude</label>
                     <input
                         type="text"
@@ -288,9 +344,14 @@ function CustomForm() {
                         className="border p-2 rounded"
                         required
                     />
-                </div>
+                </motion.div>
 
-                <div className="flex flex-col">
+                <motion.div
+                    className="flex flex-col"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: 1.0 }}
+                >
                     <label className="mb-1 font-medium" htmlFor="tag">Tag</label>
                     <Select
                         id="tag"
@@ -301,9 +362,14 @@ function CustomForm() {
                         className="basic-single-select w-full"
                         classNamePrefix="select"
                     />
-                </div>
+                </motion.div>
 
-                <div className="flex flex-col">
+                <motion.div
+                    className="flex flex-col"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: 1.1 }}
+                >
                     <label className="mb-1 font-medium" htmlFor="rating">Rating (1-5)</label>
                     <input
                         type="number"
@@ -316,9 +382,14 @@ function CustomForm() {
                         max="5"
                         step="1"
                     />
-                </div>
+                </motion.div>
 
-                <div className="flex flex-col">
+                <motion.div
+                    className="flex flex-col"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: 1.2 }}
+                >
                     <label className="mb-1 font-medium" htmlFor="site">Official Site</label>
                     <input
                         type="url"
@@ -328,9 +399,14 @@ function CustomForm() {
                         onChange={handleChange}
                         className="border p-2 rounded"
                     />
-                </div>
+                </motion.div>
 
-                <div className="flex flex-col">
+                <motion.div
+                    className="flex flex-col"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: 1.3 }}
+                >
                     <label className="mb-1 font-medium" htmlFor="description">Description</label>
                     <textarea
                         id="description"
@@ -340,22 +416,30 @@ function CustomForm() {
                         className="border p-2 rounded"
                         rows="4"
                     />
-                </div>
+                </motion.div>
 
-                <button
+                <motion.button
                     type="submit"
                     className="bg-gray-800 text-white p-2 rounded w-full hover:cursor-pointer hover:bg-gray-600"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: 1.4 }}
                 >
                     Submit
-                </button>
+                </motion.button>
 
                 {authError && (
-                    <div className="text-red-500 mt-4">
+                    <motion.div
+                        className="text-red-500 mt-4"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3, delay: 1.5 }}
+                    >
                         {authError}
-                    </div>
+                    </motion.div>
                 )}
-            </form>
-        </div>
+            </motion.form>
+        </motion.div>
     );
 }
 

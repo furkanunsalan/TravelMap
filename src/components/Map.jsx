@@ -61,6 +61,8 @@ export default function Map() {
                                 <button
                                     class="mt-4 p-2 text-white rounded"
                                     style="cursor: pointer; display: block; margin: 1em auto 0; background-color: ${place.tag === 'Burger' ? '#F57F4F' : place.tag === 'Chill' ? '#B2D8B2' : place.tag === 'ToGo' ? '#4A90E2' : '#007BFF'};"
+                                    onmouseover="this.style.backgroundColor = '${place.tag === 'Burger' ? '#E06C4F' : place.tag === 'Chill' ? '#9BCC9B' : place.tag === 'ToGo' ? '#357ABD' : '#0056b3'}';"
+                                    onmouseout="this.style.backgroundColor = '${place.tag === 'Burger' ? '#F57F4F' : place.tag === 'Chill' ? '#B2D8B2' : place.tag === 'ToGo' ? '#4A90E2' : '#007BFF'}';"
                                     onclick="window.location.href='/places/${place.slug}'"
                                 >
                                     Details
