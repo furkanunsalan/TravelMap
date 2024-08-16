@@ -20,6 +20,7 @@ Welcome to the Travel Map Website! This project is a personal tool to track and 
 - **Vite:** For development and build tooling.
 - **Vercel:** For deployment.
 - **Firebase:** Database for storing places online.
+- **Framer:** For animations.
 
 ## Setup Instructions
 
@@ -53,6 +54,7 @@ Welcome to the Travel Map Website! This project is a personal tool to track and 
     FIREBASE_SERVICE_ACCOUNT=firebase_service_account_credential
     AUTH_EMAIL=email_for_submit_page_admin
     AUTH_PASSWORD=password_for_submit_page_admin
+    MAIL_PASS=your-smtp-mail-password
     ```
 
 4. **Run the Development Server**
