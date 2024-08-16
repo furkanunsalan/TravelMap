@@ -10,7 +10,7 @@ export default function Place({ bookmarkName, date, address, status, onClick }) 
             <div className="heading flex justify-between items-center">
                 <h4>{bookmarkName} <b className="text-xs">- {date}</b></h4>
             </div>
-            <p>{address}</p>
+            <p className="text-xs">{address}</p>
         </div>
     );
 }

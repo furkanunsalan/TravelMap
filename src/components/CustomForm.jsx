@@ -1,55 +1,32 @@
 import { useState, useContext } from 'react';
+import { useNavigate } from "react-router-dom";
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css"; // Import the CSS for react-datepicker
+import "react-datepicker/dist/react-datepicker.css";
 import { PlaceContext } from '../store/place-context.jsx';
-import { format } from 'date-fns';
+import { formatDate } from "../../util/formatDate.js";
+import { generateSlug } from "../../util/generateSlug.js";
 
 function CustomForm() {
     const { addPlace } = useContext(PlaceContext);
     const [formData, setFormData] = useState({
         name: '',
         address: '',
-        date: null, // Changed to null for Date object
+        date: null,
         rating: '',
         tag: '',
         latitude: '',
         longitude: '',
         status: '',
+        site: '',
+        description: ''
     });
-    const [userType, setUserType] = useState('guest'); // 'admin' or 'guest'
+    const [userType, setUserType] = useState('guest');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [authError, setAuthError] = useState('');
+    const navigate = useNavigate()
 
-    // Function to convert Turkish characters to English equivalents
-    const convertTurkishChars = (str) => {
-        const turkishToEnglishMap = {
-            'Ç': 'C', 'Ğ': 'G', 'İ': 'I', 'ı': 'i', 'Ö': 'O', 'Ş': 'S', 'Ü': 'U',
-            'ç': 'c', 'ğ': 'g', 'ö': 'o', 'ş': 's', 'ü': 'u'
-        };
-
-        return str.split('').map(char => turkishToEnglishMap[char] || char).join('');
-    };
-
-    // Function to convert a string to a slug
-    const generateSlug = (name) => {
-        // Convert Turkish characters first
-        const normalizedName = convertTurkishChars(name);
-
-        return normalizedName
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric characters with hyphens
-            .replace(/^-+|-+$/g, ''); // Remove leading and trailing hyphens
-    };
-
-    // Function to format date as DD-MM-YYYY
-    const formatDate = (date) => {
-        if (!date) return '';
-        return format(date, 'dd-MM-yyyy');
-    };
-
-    // Handle input changes
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         if (type === 'checkbox') {
@@ -67,11 +44,11 @@ function CustomForm() {
         }
     };
 
-    const handleSelectChange = (selectedOptions, actionMeta) => {
+    const handleSelectChange = (selectedOption, actionMeta) => {
         const { name } = actionMeta;
         setFormData(prevData => ({
             ...prevData,
-            [name]: selectedOptions.map(option => option.value).join(', ') // Convert array to string
+            [name]: selectedOption ? selectedOption.value : '' // Handle single selection
         }));
     };
 
@@ -89,25 +66,28 @@ function CustomForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Generate slug from the name
         const slug = generateSlug(formData.name);
-
-        // Convert rating to integer and validate it
         const rating = parseInt(formData.rating, 10);
+        const isToGo = formData.status === 'ToGo';
+
         if (isNaN(rating) || rating < 1 || rating > 5) {
             alert('Rating must be an integer between 1 and 5');
             return;
         }
 
-        // Format the date
+        // Conditional validation for date
+        if (!isToGo && !formData.date) {
+            alert('Date is required unless the status is "ToGo"');
+            return;
+        }
+
         const formattedDate = formatDate(formData.date);
 
-        // Prepare the data to send
         const dataToSend = {
             ...formData,
-            date: formattedDate, // Format the date here
+            date: formattedDate,
             slug,
-            rating // Always include rating
+            rating
         };
 
         if (userType === 'admin') {
@@ -121,14 +101,12 @@ function CustomForm() {
                 });
                 const data = await response.json();
 
-                console.log('Response data:', data);
-
                 if (response.ok) {
-                    // Authentication successful
-                    addPlace(dataToSend); // Call the addPlace function from context
+                    addPlace(dataToSend);
                     alert('Place added successfully');
+                    navigate('/'); // Redirect to home page
+                    window.location.reload(); // Reload the page
                 } else {
-                    // Authentication failed
                     setAuthError(data.error);
                 }
             } catch (error) {
@@ -136,25 +114,26 @@ function CustomForm() {
             }
         } else {
             try {
-                // not minding the send email feature for now
                 console.log(dataToSend);
-
                 alert('Email sent successfully');
+                navigate('/'); // Redirect to home page
+                window.location.reload(); // Reload the page
             } catch (error) {
                 alert('An error occurred while sending the email.');
             }
         }
 
-        // Reset the form
         setFormData({
             name: '',
             address: '',
-            date: null, // Reset date to null
+            date: null,
             rating: '',
             tag: '',
             latitude: '',
             longitude: '',
             status: '',
+            site: '',
+            description: ''
         });
         setEmail('');
         setPassword('');
@@ -247,6 +226,19 @@ function CustomForm() {
                 </div>
 
                 <div className="flex flex-col">
+                    <label className="mb-1 font-medium" htmlFor="status">Status</label>
+                    <Select
+                        id="status"
+                        name="status"
+                        value={statusOptions.find(option => option.value === formData.status)}
+                        onChange={handleSelectChange}
+                        options={statusOptions}
+                        className="basic-single-select w-full"
+                        classNamePrefix="select"
+                    />
+                </div>
+
+                <div className="flex flex-col">
                     <label className="mb-1 font-medium" htmlFor="date">Date</label>
                     <DatePicker
                         id="date"
@@ -256,6 +248,7 @@ function CustomForm() {
                         dateFormat="dd-MM-yyyy"
                         className="border p-2 rounded w-full"
                         placeholderText="dd-mm-yyyy"
+                        disabled={formData.status === 'ToGo'} // Disable date picker if status is ToGo
                     />
                 </div>
 
@@ -286,29 +279,14 @@ function CustomForm() {
                 </div>
 
                 <div className="flex flex-col">
-                    <label className="mb-1 font-medium" htmlFor="status">Status</label>
-                    <Select
-                        id="status"
-                        name="status"
-                        isMulti
-                        value={statusOptions.filter(option => formData.status.split(', ').includes(option.value))}
-                        onChange={handleSelectChange}
-                        options={statusOptions}
-                        className="basic-multi-select w-full"
-                        classNamePrefix="select"
-                    />
-                </div>
-
-                <div className="flex flex-col">
                     <label className="mb-1 font-medium" htmlFor="tag">Tag</label>
                     <Select
                         id="tag"
                         name="tag"
-                        isMulti
-                        value={tagOptions.filter(option => formData.tag.split(', ').includes(option.value))}
+                        value={tagOptions.find(option => option.value === formData.tag)}
                         onChange={handleSelectChange}
                         options={tagOptions}
-                        className="basic-multi-select w-full"
+                        className="basic-single-select w-full"
                         classNamePrefix="select"
                     />
                 </div>
@@ -328,9 +306,33 @@ function CustomForm() {
                     />
                 </div>
 
+                <div className="flex flex-col">
+                    <label className="mb-1 font-medium" htmlFor="site">Official Site</label>
+                    <input
+                        type="url"
+                        id="site"
+                        name="site"
+                        value={formData.site}
+                        onChange={handleChange}
+                        className="border p-2 rounded"
+                    />
+                </div>
+
+                <div className="flex flex-col">
+                    <label className="mb-1 font-medium" htmlFor="description">Description</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        value={formData.description}
+                        onChange={handleChange}
+                        className="border p-2 rounded"
+                        rows="4"
+                    />
+                </div>
+
                 <button
                     type="submit"
-                    className="bg-blue-500 text-white p-2 rounded w-1/3"
+                    className="bg-gray-800 text-white p-2 rounded w-full hover:cursor-pointer hover:bg-gray-600"
                 >
                     Submit
                 </button>
