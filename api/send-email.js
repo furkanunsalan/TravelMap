@@ -1,25 +1,3 @@
-// Example handler for /api/send-email
-
-/*export default function handler(req, res) {
-    if (req.method === 'POST') {
-        // Log the request body for debugging
-        console.log('Received request body:', data);
-
-
-
-        // Respond with the received data
-        res.status(200).json({
-            message: 'Data received successfully',
-            receivedData: data
-        });
-    } else {
-        res.setHeader('Allow', ['POST']);
-        res.status(405).end(`Method ${req.method} Not Allowed`);
-    }
-}*/
-
-// Example handler for /api/send-email
-
 import nodemailer from 'nodemailer';
 
 export default async function handler(req, res) {
@@ -51,7 +29,7 @@ export default async function handler(req, res) {
                 secure: false, // Use true if using port 465 for SSL
                 auth: {
                     user: 'map@furkanunsalan.dev',
-                    pass: '@joQPFK#z3KckMa9'
+                    pass: process.env.MAIL_PASS
                 },
                 tls: {
                     rejectUnauthorized: false // Bypass certificate validation
