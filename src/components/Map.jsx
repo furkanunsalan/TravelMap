@@ -48,6 +48,7 @@ export default function Map() {
                                 <div class="flex items-center justify-center mb-2">
                                     ${place.tag === 'Burger' ? '<span class="text-xl text-orange-500">🍔</span>' : ''}
                                     ${place.tag === 'Chill' ? '<span class="text-xl text-brown-300">☕️</span>' : ''}
+                                    ${place.tag === 'Travel' ? '<span class="text-xl text-blue-500">🗺️</span>' : ''}
                                     <h3 class="text-lg font-semibold ml-2">${place.name}</h3>
                                 </div>
                                 <p class="text-sm mb-2">${place.address}</p>
@@ -73,7 +74,7 @@ export default function Map() {
 
                         const marker = new maptilersdk.Marker({
                             color: place.tag === 'Burger' ? "#F57F4F" :
-                                place.tag === 'ToGo' ? "#4A90E2" :
+                                place.tag === 'Travel' ? "#4A90E2" :
                                     place.tag === 'Chill' ? "#B2D8B2" : "#000000"
                         })
                             .setLngLat([longitude, latitude])

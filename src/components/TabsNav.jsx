@@ -19,6 +19,7 @@ export function TabsNav() {
     const placesToGo = places.filter(place => place.status === 'ToGo');
     const placesGoneBurger = places.filter(place => place.tag === 'Burger' && place.status === "Gone");
     const placesGoneChill = places.filter(place => place.tag === 'Chill' && place.status === "Gone");
+    const placesGoneTravel = places.filter(place => place.tag === 'Travel' && place.status === "Gone");
 
     const placeVariants = {
         hidden: { opacity: 0, y: 20 },
@@ -107,7 +108,28 @@ export function TabsNav() {
                                 ))}
                             </>
                         )}
-                        {placesGoneBurger.length === 0 && placesGoneChill.length === 0 && (
+                        {placesGoneTravel.length > 0 && (
+                            <>
+                                <h1 className="text-center text-xl font-bold mb-4">Burger Places</h1>
+                                {placesGoneTravel.map((place, index) => (
+                                    <motion.div
+                                        key={index}
+                                        initial="hidden"
+                                        animate="visible"
+                                        variants={placeVariants}
+                                        transition={{ duration: 0.5, delay: index * 0.1 }} // Stagger the animation
+                                    >
+                                        <Place
+                                            bookmarkName={place.name}
+                                            address={place.address}
+                                            date={place.date}
+                                            onClick={() => navigate(`/places/${place.slug}`)}
+                                        />
+                                    </motion.div>
+                                ))}
+                            </>
+                        )}
+                        {placesGoneBurger.length === 0 && placesGoneChill.length === 0 && placesGoneTravel.length === 0 && (
                             <p className="text-center text-lg font-semibold mt-4">No places to display at the moment.</p>
                         )}
                     </TabPanel>
