@@ -46,7 +46,7 @@ export default function Map() {
                         popupDiv.innerHTML = `
                             <div style="text-align: center; font-family: Arial, sans-serif; color: #333;">
                                 <div class="flex items-center justify-center mb-2">
-                                    ${place.tag === 'Burger' ? '<span class="text-xl text-orange-500">🍔</span>' : ''}
+                                    ${place.tag === 'Food' ? '<span class="text-xl text-orange-500">🍔</span>' : ''}
                                     ${place.tag === 'Chill' ? '<span class="text-xl text-brown-300">☕️</span>' : ''}
                                     ${place.tag === 'Travel' ? '<span class="text-xl text-blue-500">🗺️</span>' : ''}
                                     <h3 class="text-lg font-semibold ml-2">${place.name}</h3>
@@ -61,8 +61,8 @@ export default function Map() {
                                 <button
                                     class="mt-4 p-2 text-white rounded"
                                     style="cursor: pointer; display: block; margin: 1em auto 0; background-color: ${place.tag === 'Burger' ? '#F57F4F' : place.tag === 'Chill' ? '#B2D8B2' : place.tag === 'ToGo' ? '#4A90E2' : '#007BFF'};"
-                                    onmouseover="this.style.backgroundColor = '${place.tag === 'Burger' ? '#E06C4F' : place.tag === 'Chill' ? '#9BCC9B' : place.tag === 'ToGo' ? '#357ABD' : '#0056b3'}';"
-                                    onmouseout="this.style.backgroundColor = '${place.tag === 'Burger' ? '#F57F4F' : place.tag === 'Chill' ? '#B2D8B2' : place.tag === 'ToGo' ? '#4A90E2' : '#007BFF'}';"
+                                    onmouseover="this.style.backgroundColor = '${place.tag === 'Food' ? '#E06C4F' : place.tag === 'Chill' ? '#9BCC9B' : place.tag === 'Travel' ? '#357ABD' : '#0056b3'}';"
+                                    onmouseout="this.style.backgroundColor = '${place.tag === 'Food' ? '#F57F4F' : place.tag === 'Chill' ? '#B2D8B2' : place.tag === 'Travel' ? '#4A90E2' : '#007BFF'}';"
                                     onclick="window.location.href='/places/${place.slug}'"
                                 >
                                     Details
@@ -73,7 +73,7 @@ export default function Map() {
                         const popup = new maptilersdk.Popup().setDOMContent(popupDiv)
 
                         const marker = new maptilersdk.Marker({
-                            color: place.tag === 'Burger' ? "#F57F4F" :
+                            color: place.tag === 'Food' ? "#F57F4F" :
                                 place.tag === 'Travel' ? "#4A90E2" :
                                     place.tag === 'Chill' ? "#B2D8B2" : "#000000"
                         })

@@ -17,7 +17,7 @@ export function TabsNav() {
     const { places } = useContext(PlaceContext);
 
     const placesToGo = places.filter(place => place.status === 'ToGo');
-    const placesGoneBurger = places.filter(place => place.tag === 'Burger' && place.status === "Gone");
+    const placesGoneFood = places.filter(place => place.tag === 'Food' && place.status === "Gone");
     const placesGoneChill = places.filter(place => place.tag === 'Chill' && place.status === "Gone");
     const placesGoneTravel = places.filter(place => place.tag === 'Travel' && place.status === "Gone");
 
@@ -64,12 +64,12 @@ export function TabsNav() {
                     </TabPanel>
                     <TabPanel
                         value="gone"
-                        className={`flex flex-col ${placesGoneBurger.length > 0 || placesGoneChill.length > 0 ? 'overflow-auto h-[400px]' : 'h-auto'}`}
+                        className={`flex flex-col ${placesGoneFood.length > 0 || placesGoneChill.length > 0 ? 'overflow-auto h-[400px]' : 'h-auto'}`}
                     >
-                        {placesGoneBurger.length > 0 && (
+                        {placesGoneFood.length > 0 && (
                             <>
                                 <h1 className="text-center text-xl font-bold mb-4">Burger Places</h1>
-                                {placesGoneBurger.map((place, index) => (
+                                {placesGoneFood.map((place, index) => (
                                     <motion.div
                                         key={index}
                                         initial="hidden"
@@ -129,7 +129,7 @@ export function TabsNav() {
                                 ))}
                             </>
                         )}
-                        {placesGoneBurger.length === 0 && placesGoneChill.length === 0 && placesGoneTravel.length === 0 && (
+                        {placesGoneFood.length === 0 && placesGoneChill.length === 0 && placesGoneTravel.length === 0 && (
                             <p className="text-center text-lg font-semibold mt-4">No places to display at the moment.</p>
                         )}
                     </TabPanel>
