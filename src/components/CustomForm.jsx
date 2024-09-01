@@ -160,7 +160,8 @@ function CustomForm() {
     const tagOptions = [
         { value: 'Burger', label: 'Burger' },
         { value: 'Chill', label: 'Chill' },
-        { value: 'ToGo', label: 'ToGo' }
+        { value: 'Travel', label: 'Travel' },
+        { value: 'Library', label: 'Library' }
     ];
 
     return (
