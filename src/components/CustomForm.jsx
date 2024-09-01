@@ -13,12 +13,10 @@ function CustomForm() {
     const [formData, setFormData] = useState({
         name: '',
         address: '',
-        date: null,
         rating: '',
         tag: '',
         latitude: '',
         longitude: '',
-        status: '',
         site: '',
         description: ''
     });
@@ -58,10 +56,12 @@ function CustomForm() {
     };
 
     const handleDateChange = (date) => {
-        setFormData(prevData => ({
-            ...prevData,
-            date
-        }));
+        if (userType === 'admin') {
+            setFormData(prevData => ({
+                ...prevData,
+                date
+            }));
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -69,25 +69,17 @@ function CustomForm() {
 
         const slug = generateSlug(formData.name);
         const rating = parseInt(formData.rating, 10);
-        const isToGo = formData.status === 'ToGo';
 
         if (isNaN(rating) || rating < 1 || rating > 5) {
             alert('Rating must be an integer between 1 and 5');
             return;
         }
 
-        if (!isToGo && !formData.date) {
-            alert('Date is required unless the status is "ToGo"');
-            return;
-        }
-
-        const formattedDate = formatDate(formData.date);
-
         const dataToSend = {
             ...formData,
-            date: formattedDate,
             slug,
-            rating
+            rating,
+            date: userType === 'admin' ? formatDate(formData.date) : undefined // Include date only for admin
         };
 
         if (userType === 'admin') {
@@ -138,12 +130,10 @@ function CustomForm() {
         setFormData({
             name: '',
             address: '',
-            date: null,
             rating: '',
             tag: '',
             latitude: '',
             longitude: '',
-            status: '',
             site: '',
             description: ''
         });
@@ -274,42 +264,45 @@ function CustomForm() {
                     />
                 </motion.div>
 
-                <motion.div
-                    className="flex flex-col"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: 0.6 }}
-                >
-                    <label className="mb-1 font-medium" htmlFor="status">Status</label>
-                    <Select
-                        id="status"
-                        name="status"
-                        value={statusOptions.find(option => option.value === formData.status)}
-                        onChange={handleSelectChange}
-                        options={statusOptions}
-                        className="basic-single-select w-full"
-                        classNamePrefix="select"
-                    />
-                </motion.div>
+                {userType === 'admin' && (
+                    <>
+                        <motion.div
+                            className="flex flex-col"
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.3, delay: 0.6 }}
+                        >
+                            <label className="mb-1 font-medium" htmlFor="status">Status</label>
+                            <Select
+                                id="status"
+                                name="status"
+                                value={statusOptions.find(option => option.value === formData.status)}
+                                onChange={handleSelectChange}
+                                options={statusOptions}
+                                className="basic-single-select w-full"
+                                classNamePrefix="select"
+                            />
+                        </motion.div>
 
-                <motion.div
-                    className="flex flex-col"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: 0.7 }}
-                >
-                    <label className="mb-1 font-medium" htmlFor="date">Date</label>
-                    <DatePicker
-                        id="date"
-                        name="date"
-                        selected={formData.date}
-                        onChange={handleDateChange}
-                        dateFormat="dd-MM-yyyy"
-                        className="border p-2 rounded w-full"
-                        placeholderText="dd-mm-yyyy"
-                        disabled={formData.status === 'ToGo'} // Disable date picker if status is ToGo
-                    />
-                </motion.div>
+                        <motion.div
+                            className="flex flex-col"
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.3, delay: 0.7 }}
+                        >
+                            <label className="mb-1 font-medium" htmlFor="date">Date</label>
+                            <DatePicker
+                                id="date"
+                                name="date"
+                                selected={formData.date}
+                                onChange={handleDateChange}
+                                dateFormat="dd-MM-yyyy"
+                                className="border p-2 rounded w-full"
+                                placeholderText="dd-mm-yyyy"
+                            />
+                        </motion.div>
+                    </>
+                )}
 
                 <motion.div
                     className="flex flex-col"
