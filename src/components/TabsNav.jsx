@@ -16,9 +16,9 @@ export function TabsNav() {
     const navigate = useNavigate();
     const { places } = useContext(PlaceContext);
 
-    const placesToGo = places.filter(place => place.tag === 'ToGo');
-    const placesBurger = places.filter(place => place.tag === 'Burger');
-    const placesChill = places.filter(place => place.tag === 'Chill');
+    const placesToGo = places.filter(place => place.status === 'ToGo');
+    const placesGoneBurger = places.filter(place => place.tag === 'Burger' && place.status === "Gone");
+    const placesGoneChill = places.filter(place => place.tag === 'Chill' && place.status === "Gone");
 
     const placeVariants = {
         hidden: { opacity: 0, y: 20 },
@@ -63,12 +63,12 @@ export function TabsNav() {
                     </TabPanel>
                     <TabPanel
                         value="gone"
-                        className={`flex flex-col ${placesBurger.length > 0 || placesChill.length > 0 ? 'overflow-auto h-[400px]' : 'h-auto'}`}
+                        className={`flex flex-col ${placesGoneBurger.length > 0 || placesGoneChill.length > 0 ? 'overflow-auto h-[400px]' : 'h-auto'}`}
                     >
-                        {placesBurger.length > 0 && (
+                        {placesGoneBurger.length > 0 && (
                             <>
                                 <h1 className="text-center text-xl font-bold mb-4">Burger Places</h1>
-                                {placesBurger.map((place, index) => (
+                                {placesGoneBurger.map((place, index) => (
                                     <motion.div
                                         key={index}
                                         initial="hidden"
@@ -86,10 +86,10 @@ export function TabsNav() {
                                 ))}
                             </>
                         )}
-                        {placesChill.length > 0 && (
+                        {placesGoneChill.length > 0 && (
                             <>
                                 <h1 className="text-center text-xl font-bold mt-4">Chill Places</h1>
-                                {placesChill.map((place, index) => (
+                                {placesGoneChill.map((place, index) => (
                                     <motion.div
                                         key={index}
                                         initial="hidden"
@@ -107,7 +107,7 @@ export function TabsNav() {
                                 ))}
                             </>
                         )}
-                        {placesBurger.length === 0 && placesChill.length === 0 && (
+                        {placesGoneBurger.length === 0 && placesGoneChill.length === 0 && (
                             <p className="text-center text-lg font-semibold mt-4">No places to display at the moment.</p>
                         )}
                     </TabPanel>

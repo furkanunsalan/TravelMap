@@ -48,11 +48,10 @@ export default function Map() {
                                 <div class="flex items-center justify-center mb-2">
                                     ${place.tag === 'Burger' ? '<span class="text-xl text-orange-500">🍔</span>' : ''}
                                     ${place.tag === 'Chill' ? '<span class="text-xl text-brown-300">☕️</span>' : ''}
-                                    ${place.tag === 'ToGo' ? '<span class="text-xl text-blue-500">📋</span>' : ''}
                                     <h3 class="text-lg font-semibold ml-2">${place.name}</h3>
                                 </div>
                                 <p class="text-sm mb-2">${place.address}</p>
-                                ${place.tag === 'ToGo' ? '<p class="text-xs mb-2">Looking Forward to Visiting</p>' : `<p class="text-xs mb-2">Visited On: ${place.date}</p>`}
+                                ${place.status === 'ToGo' ? '<p class="text-xs mb-2">Looking Forward to Visiting</p>' : `<p class="text-xs mb-2">Visited On: ${place.date}</p>`}
                                 <div class="flex items-center justify-center mb-2">
                                     <div class="flex">
                                         ${Array(place.rating).fill(false).map((_, index) => `<span class="text-black text-lg ${index < place.rating ? 'inline-block' : 'text-gray-300'}">★</span>`).join('')}
