@@ -148,7 +148,7 @@ function CustomForm() {
     ];
 
     const tagOptions = [
-        { value: 'Burger', label: 'Burger' },
+        { value: 'Food', label: 'Food' },
         { value: 'Chill', label: 'Chill' },
         { value: 'Travel', label: 'Travel' },
         { value: 'Library', label: 'Library' }
