@@ -156,7 +156,7 @@ function CustomForm() {
 
     return (
         <motion.div
-            className="max-w-md mx-auto mt-32 mb-10 md:mb-32 md:mt-10 p-5"
+            className="max-w-md mx-auto mt-32 mb-10 md:mb-32 md:mt-32 p-5"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}

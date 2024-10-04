@@ -6,6 +6,7 @@ import ErrorPage from "./pages/ErrorPage.jsx";
 import ErrorBoundary from "./pages/ErrorBoundary.jsx";
 import PlaceContextProvider from "./store/place-context.jsx";
 import SubmitPage from "./pages/SubmitPage.jsx";
+import Popup from './components/Popup.jsx';
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                         <Route path="*" element={<ErrorPage />} />
                     </Routes>
             </Router>
+            <Popup />
         </PlaceContextProvider>
     );
 }

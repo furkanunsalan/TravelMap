@@ -10,6 +10,7 @@ import CustomModal from "../components/CustomModal.jsx";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format, parse } from 'date-fns';
+import Footer from "../components/Footer.jsx";
 
 function PlaceDetail() {
     const { 'place-slug': placeSlug } = useParams();
@@ -139,7 +140,7 @@ function PlaceDetail() {
                 <meta name="description" content={placeDetails.description || "Explore diverse places of interest, from charming local spots to hidden gems. Discover detailed information, ratings, and reviews to help you find your next adventure."} />
                 <meta name="keywords" content="React, Vite, Metadata" />
             </Helmet>
-            <div className="w-5/6 md:w-1/2 mx-auto mt-5">
+            <div className="w-5/6 md:w-1/2 mx-auto mt-32">
                 <CustomNavbar />
                 <div className="relative h-96 mt-32 md:mt-5">
                     <div ref={mapContainer} className="w-full h-full rounded-2xl" />
@@ -198,6 +199,7 @@ function PlaceDetail() {
                     isSubmitting={isSubmitting}
                 />
             )}
+            <Footer />
         </>
     );
 }

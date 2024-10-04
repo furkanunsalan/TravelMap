@@ -1,20 +1,11 @@
-import React from 'react';
-import {
-    Tabs,
-    TabsHeader,
-    TabsBody,
-    Tab,
-    TabPanel,
-} from "@material-tailwind/react";
-import { motion } from 'framer-motion';
-import Place from "./Place.jsx";
-import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import React, { useState, useContext } from 'react';
+import PlaceCard from "../components/PlaceCard.jsx";
 import { PlaceContext } from "../store/place-context.jsx";
 
 export function TabsNav() {
-    const navigate = useNavigate();
     const { places } = useContext(PlaceContext);
+
+    const [activeTab, setActiveTab] = useState("to-go");
 
     const placesToGo = places.filter(place => place.status === 'ToGo');
     const placesGoneFood = places.filter(place => place.tag === 'Food' && place.status === "Gone");
@@ -28,135 +19,113 @@ export function TabsNav() {
     };
 
     return (
-        <div className="p-5"> {/* Added padding for better spacing */}
-            <Tabs value="to-go" className="w-full">
-                <TabsHeader>
-                    <Tab value="to-go">To Go</Tab>
-                    <Tab value="gone">Gone</Tab>
-                </TabsHeader>
-                <TabsBody className="w-full">
-                    <TabPanel
-                        value="to-go"
-                        className={`flex flex-col ${placesToGo.length > 0 ? 'overflow-auto h-[400px]' : 'h-auto'}`}
-                    >
+        <div className="p-5">
+            <div className="flex justify-center gap-4 mb-6">
+                <button
+                    className={`py-2 px-4 font-semibold rounded-lg transition-colors ${activeTab === "to-go" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-800"}`}
+                    onClick={() => setActiveTab("to-go")}
+                >
+                    To Go
+                </button>
+                <button
+                    className={`py-2 px-4 font-semibold rounded-lg transition-colors ${activeTab === "gone" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-800"}`}
+                    onClick={() => setActiveTab("gone")}
+                >
+                    Gone
+                </button>
+            </div>
+
+            <div className="w-full">
+                {activeTab === "to-go" && (
+                    <div className="flex flex-wrap gap-4 justify-center">
                         {placesToGo.length > 0 ? (
                             <>
-                                <h1 className="text-center text-xl font-bold mb-4">Places I Plan to Visit</h1>
-                                {placesToGo.map((place, index) => (
-                                    <motion.div
-                                        key={index}
-                                        initial="hidden"
-                                        animate="visible"
-                                        variants={placeVariants}
-                                        transition={{ duration: 0.5, delay: index * 0.1 }} // Stagger the animation
-                                    >
-                                        <Place
-                                            bookmarkName={place.name}
-                                            address={place.address}
-                                            date={place.date}
-                                            onClick={() => navigate(`/places/${place.slug}`)}
+                                <h1 className="text-center text-xl font-bold mb-4 w-full">Places I Plan to Visit</h1>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
+                                    {placesToGo.map((place, index) => (
+                                        <PlaceCard 
+                                            key={index}
+                                            place={place}
+                                            index={index}
+                                            placeVariants={placeVariants}
                                         />
-                                    </motion.div>
-                                ))}
+                                    ))}
+                                </div>
                             </>
                         ) : (
-                            <p className="text-center text-lg font-semibold">No places to go at the moment.</p>
+                            <p className="text-center text-lg font-semibold w-full">No places to go at the moment.</p>
                         )}
-                    </TabPanel>
-                    <TabPanel
-                        value="gone"
-                        className={`flex flex-col ${placesGoneFood.length > 0 || placesGoneChill.length > 0 ? 'overflow-auto h-[400px]' : 'h-auto'}`}
-                    >
+                    </div>
+                )}
+
+                {activeTab === "gone" && (
+                    <div className="flex flex-wrap gap-4 justify-center">
                         {placesGoneFood.length > 0 && (
                             <>
-                                <h1 className="text-center text-xl font-bold mb-4">Food Places</h1>
-                                {placesGoneFood.map((place, index) => (
-                                    <motion.div
-                                        key={index}
-                                        initial="hidden"
-                                        animate="visible"
-                                        variants={placeVariants}
-                                        transition={{ duration: 0.5, delay: index * 0.1 }} // Stagger the animation
-                                    >
-                                        <Place
-                                            bookmarkName={place.name}
-                                            address={place.address}
-                                            date={place.date}
-                                            onClick={() => navigate(`/places/${place.slug}`)}
+                                <h1 className="text-center text-xl font-bold mb-4 w-full">Food</h1>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
+                                    {placesGoneFood.map((place, index) => (
+                                        <PlaceCard 
+                                            key={index}
+                                            place={place}
+                                            index={index}
+                                            placeVariants={placeVariants}
                                         />
-                                    </motion.div>
-                                ))}
+                                    ))}
+                                </div>
                             </>
                         )}
                         {placesGoneChill.length > 0 && (
                             <>
-                                <h1 className="text-center text-xl font-bold mt-4">Chill Places</h1>
-                                {placesGoneChill.map((place, index) => (
-                                    <motion.div
-                                        key={index}
-                                        initial="hidden"
-                                        animate="visible"
-                                        variants={placeVariants}
-                                        transition={{ duration: 0.5, delay: index * 0.1 }} // Stagger the animation
-                                    >
-                                        <Place
-                                            bookmarkName={place.name}
-                                            address={place.address}
-                                            date={place.date}
-                                            onClick={() => navigate(`/places/${place.slug}`)}
+                                <h1 className="text-center text-xl font-bold mt-4 w-full">Chill & Hangout</h1>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
+                                    {placesGoneChill.map((place, index) => (
+                                        <PlaceCard 
+                                            key={index}
+                                            place={place}
+                                            index={index}
+                                            placeVariants={placeVariants}
                                         />
-                                    </motion.div>
-                                ))}
+                                    ))}
+                                </div>
                             </>
                         )}
                         {placesGoneTravel.length > 0 && (
                             <>
-                                <h1 className="text-center text-xl font-bold mb-4">Travel Places</h1>
-                                {placesGoneTravel.map((place, index) => (
-                                    <motion.div
-                                        key={index}
-                                        initial="hidden"
-                                        animate="visible"
-                                        variants={placeVariants}
-                                        transition={{ duration: 0.5, delay: index * 0.1 }} // Stagger the animation
-                                    >
-                                        <Place
-                                            bookmarkName={place.name}
-                                            address={place.address}
-                                            date={place.date}
-                                            onClick={() => navigate(`/places/${place.slug}`)}
+                                <h1 className="text-center text-xl font-bold mb-4 w-full">Travel List</h1>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
+                                    {placesGoneTravel.map((place, index) => (
+                                        <PlaceCard 
+                                            key={index}
+                                            place={place}
+                                            index={index}
+                                            placeVariants={placeVariants}
                                         />
-                                    </motion.div>
-                                ))}
+                                    ))}
+                                </div>
                             </>
                         )}
                         {placesGoneLibrary.length > 0 && (
                             <>
-                                <h1 className="text-center text-xl font-bold mt-4">Library Places</h1>
-                                {placesGoneLibrary.map((place, index) => (
-                                    <motion.div
-                                        key={index}
-                                        initial="hidden"
-                                        animate="visible"
-                                        variants={placeVariants}
-                                        transition={{ duration: 0.5, delay: index * 0.1 }} // Stagger the animation
-                                    >
-                                        <Place
-                                            bookmarkName={place.name}
-                                            address={place.address}
-                                            date={place.date}
-                                            onClick={() => navigate(`/places/${place.slug}`)}
+                                <h1 className="text-center text-xl font-bold mt-4 w-full">Libraries</h1>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
+                                    {placesGoneLibrary.map((place, index) => (
+                                        <PlaceCard 
+                                            key={index}
+                                            place={place}
+                                            index={index}
+                                            placeVariants={placeVariants}
                                         />
-                                    </motion.div>
-                                ))}
+                                    ))}
+                                </div>
                             </>
                         )}
                         {placesGoneFood.length === 0 && placesGoneChill.length === 0 && placesGoneTravel.length === 0 && placesGoneLibrary.length === 0 && (
-                            <p className="text-center text-lg font-semibold mt-4">No places to display at the moment.</p>
+                            <p className="text-center text-lg font-semibold mt-4 w-full">No places to display at the moment.</p>
                         )}
-                    </TabPanel>
-                </TabsBody>
-            </Tabs>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

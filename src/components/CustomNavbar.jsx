@@ -56,12 +56,11 @@ function NavList() {
 
 export function CustomNavbar() {
     const [isNavOpen, setIsNavOpen] = React.useState(false);
-    const navigate = useNavigate()
-
+    const navigate = useNavigate();
 
     const navigateSubmit = () => {
-        navigate('/submit')
-    }
+        navigate('/submit');
+    };
 
     const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
 
@@ -73,7 +72,7 @@ export function CustomNavbar() {
     }, []);
 
     return (
-        <Navbar className="mx-auto max-w-screen-xl p-2 lg:pl-6 w-5/6 absolute mt-10 top-0 bottom-auto md:mb-10 md:bottom-0 md:top-auto left-1/2 transform -translate-x-1/2 z-20">
+        <Navbar className="fixed top-5 left-1/2 transform -translate-x-1/2 z-20 w-5/6 mx-auto max-w-screen-xl p-2 lg:pl-6">
             <div className="relative flex items-center justify-between w-full text-blue-gray-900">
                 <Typography
                     as="a"
@@ -103,6 +102,5 @@ export function CustomNavbar() {
                 <NavList />
             </Collapse>
         </Navbar>
-
     );
 }

@@ -4,6 +4,7 @@ import '../styles/places.css';
 import { TabsNav } from "../components/TabsNav.jsx";
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
+import Footer from "../components/Footer.jsx";
 
 function Places() {
     const navigate = useNavigate();
@@ -18,7 +19,7 @@ function Places() {
 
             {/* Animated Heading */}
             <motion.h1
-                className="text-3xl md:text-4xl font-bold text-gray-800 m-auto mt-32 md:mt-12 text-center"
+                className="text-3xl md:text-4xl font-bold text-gray-800 m-auto mt-32 md:mt-32 text-center"
                 initial={{ opacity: 0, y: -50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
@@ -46,6 +47,8 @@ function Places() {
             >
                 <Outlet />
             </motion.div>
+
+            <Footer />
         </>
     );
 }

@@ -12,8 +12,8 @@ function SubmitPlace() {
                 <meta name="keywords" content="React, Vite, Metadata" />
             </Helmet>
             <div className="h-screen overflow-auto">
-                <CustomForm />
                 <CustomNavbar />
+                <CustomForm />
             </div>
         </>
 
