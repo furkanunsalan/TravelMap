@@ -18,9 +18,27 @@ export function TabsNav() {
         visible: { opacity: 1, y: 0 },
     };
 
+    const renderPlaceGrid = (places, title) => (
+        places.length > 0 && (
+            <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+                <h2 className="text-center text-xl font-bold mt-8 mb-6">{title}</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {places.map((place, index) => (
+                        <PlaceCard 
+                            key={index}
+                            place={place}
+                            index={index}
+                            placeVariants={placeVariants}
+                        />
+                    ))}
+                </div>
+            </div>
+        )
+    );
+
     return (
-        <div className="p-5">
-            <div className="flex justify-center gap-4 mb-6">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+            <div className="flex justify-center gap-4 mb-8">
                 <button
                     className={`py-2 px-4 font-semibold rounded-lg transition-colors ${activeTab === "to-go" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-800"}`}
                     onClick={() => setActiveTab("to-go")}
@@ -37,11 +55,11 @@ export function TabsNav() {
 
             <div className="w-full">
                 {activeTab === "to-go" && (
-                    <div className="flex flex-wrap gap-4 justify-center">
+                    <div>
                         {placesToGo.length > 0 ? (
                             <>
-                                <h1 className="text-center text-xl font-bold mb-4 w-full">Places I Plan to Visit</h1>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
+                                <h1 className="text-center text-2xl font-bold mb-6">Places I Plan to Visit</h1>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                                     {placesToGo.map((place, index) => (
                                         <PlaceCard 
                                             key={index}
@@ -53,75 +71,22 @@ export function TabsNav() {
                                 </div>
                             </>
                         ) : (
-                            <p className="text-center text-lg font-semibold w-full">No places to go at the moment.</p>
+                            <p className="text-center text-lg font-semibold">No places to go at the moment.</p>
                         )}
                     </div>
                 )}
 
                 {activeTab === "gone" && (
-                    <div className="flex flex-wrap gap-4 justify-center">
-                        {placesGoneFood.length > 0 && (
-                            <>
-                                <h1 className="text-center text-xl font-bold mb-4 w-full">Food</h1>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
-                                    {placesGoneFood.map((place, index) => (
-                                        <PlaceCard 
-                                            key={index}
-                                            place={place}
-                                            index={index}
-                                            placeVariants={placeVariants}
-                                        />
-                                    ))}
-                                </div>
-                            </>
-                        )}
-                        {placesGoneChill.length > 0 && (
-                            <>
-                                <h1 className="text-center text-xl font-bold mt-4 w-full">Chill & Hangout</h1>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
-                                    {placesGoneChill.map((place, index) => (
-                                        <PlaceCard 
-                                            key={index}
-                                            place={place}
-                                            index={index}
-                                            placeVariants={placeVariants}
-                                        />
-                                    ))}
-                                </div>
-                            </>
-                        )}
-                        {placesGoneTravel.length > 0 && (
-                            <>
-                                <h1 className="text-center text-xl font-bold mb-4 w-full">Travel List</h1>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
-                                    {placesGoneTravel.map((place, index) => (
-                                        <PlaceCard 
-                                            key={index}
-                                            place={place}
-                                            index={index}
-                                            placeVariants={placeVariants}
-                                        />
-                                    ))}
-                                </div>
-                            </>
-                        )}
-                        {placesGoneLibrary.length > 0 && (
-                            <>
-                                <h1 className="text-center text-xl font-bold mt-4 w-full">Libraries</h1>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
-                                    {placesGoneLibrary.map((place, index) => (
-                                        <PlaceCard 
-                                            key={index}
-                                            place={place}
-                                            index={index}
-                                            placeVariants={placeVariants}
-                                        />
-                                    ))}
-                                </div>
-                            </>
-                        )}
-                        {placesGoneFood.length === 0 && placesGoneChill.length === 0 && placesGoneTravel.length === 0 && placesGoneLibrary.length === 0 && (
-                            <p className="text-center text-lg font-semibold mt-4 w-full">No places to display at the moment.</p>
+                    <div>
+                        {renderPlaceGrid(placesGoneFood, "Food")}
+                        {renderPlaceGrid(placesGoneChill, "Chill & Hangout")}
+                        {renderPlaceGrid(placesGoneTravel, "Travel List")}
+                        {renderPlaceGrid(placesGoneLibrary, "Libraries")}
+                        {placesGoneFood.length === 0 && placesGoneChill.length === 0 && 
+                         placesGoneTravel.length === 0 && placesGoneLibrary.length === 0 && (
+                            <p className="text-center text-lg font-semibold mt-4">
+                                No places to display at the moment.
+                            </p>
                         )}
                     </div>
                 )}
