@@ -1,17 +1,17 @@
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
 
 export default async function handler(req, res) {
-    if (req.method === 'POST') {
+    if (req.method === "POST") {
         try {
             const { formData } = req.body;
 
             if (!formData) {
-                return res.status(400).json({ error: 'Missing form data' });
+                return res.status(400).json({ error: "Missing form data" });
             }
 
             // Remove circular references (if any)
             function removeCircularReferences(obj, seen = new WeakSet()) {
-                if (obj && typeof obj === 'object') {
+                if (obj && typeof obj === "object") {
                     if (seen.has(obj)) {
                         return; // Circular reference found, remove it
                     }
@@ -24,37 +24,40 @@ export default async function handler(req, res) {
             removeCircularReferences(formData);
 
             const transporter = nodemailer.createTransport({
-                host: 'mail.kurumsaleposta.com',
+                host: "mail.kurumsaleposta.com",
                 port: 587,
                 secure: false, // Use true if using port 465 for SSL
                 auth: {
-                    user: 'map@furkanunsalan.dev',
-                    pass: process.env.MAIL_PASS
+                    user: "map@furkanunsalan.dev",
+                    pass: process.env.MAIL_PASS,
                 },
                 tls: {
-                    rejectUnauthorized: false // Bypass certificate validation
-                }
+                    rejectUnauthorized: false, // Bypass certificate validation
+                },
             });
 
             const mailOptions = {
-                from: 'map@furkanunsalan.dev',
-                to: 'hi@furkanunsalan.dev',
-                subject: 'New Place Submission',
-                text: `New place submitted:\n\n${JSON.stringify(formData, null, 2)}`
+                from: "map@furkanunsalan.dev",
+                to: "hi@furkanunsalan.dev",
+                subject: "New Place Submission",
+                text: `New place submitted:\n\n${JSON.stringify(
+                    formData,
+                    null,
+                    2
+                )}`,
             };
 
             await transporter.sendMail(mailOptions);
 
-            res.status(200).json({ message: 'Email sent successfully' });
+            res.status(200).json({ message: "Email sent successfully" });
         } catch (error) {
-            console.error('Error sending email:', error); // Log the error to Vercel's logs
-            res.status(500).json({ error: 'An error occurred while sending the email.' });
+            console.error("Error sending email:", error); // Log the error to Vercel's logs
+            res.status(500).json({
+                error: "An error occurred while sending the email.",
+            });
         }
     } else {
-        res.setHeader('Allow', ['POST']);
+        res.setHeader("Allow", ["POST"]);
         res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }
-
-
-

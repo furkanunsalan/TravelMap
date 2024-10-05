@@ -5,37 +5,38 @@ import {
     Typography,
     Button,
     MenuItem,
-    IconButton, Collapse,
+    IconButton,
+    Collapse,
 } from "@material-tailwind/react";
 import {
     Bars2Icon,
     MapIcon,
     HomeIcon,
-    PhotoIcon
+    PhotoIcon,
 } from "@heroicons/react/24/solid";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // nav list component
 const navListItems = [
     {
         label: "Home",
         icon: HomeIcon,
-        to: "/"
+        to: "/",
     },
     {
-        label: "Places",
+        label: "Landmarks",
         icon: MapIcon,
-        to: "/places"
-    }
+        to: "/landmarks",
+    },
 ];
 
 function NavList() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     return (
         <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
             {/* <NavListMenu /> */}
-            {navListItems.map(({ label, icon, to}, key) => (
+            {navListItems.map(({ label, icon, to }, key) => (
                 <Typography
                     key={label}
                     as="a"
@@ -45,7 +46,9 @@ function NavList() {
                     onClick={to.startsWith("/") ? () => navigate(to) : null}
                 >
                     <MenuItem className="flex items-center gap-2 lg:rounded-full">
-                        {React.createElement(icon, { className: "h-[18px] w-[18px]" })}{" "}
+                        {React.createElement(icon, {
+                            className: "h-[18px] w-[18px]",
+                        })}{" "}
                         <span className="text-gray-900"> {label}</span>
                     </MenuItem>
                 </Typography>
@@ -59,7 +62,7 @@ export function CustomNavbar() {
     const navigate = useNavigate();
 
     const navigateSubmit = () => {
-        navigate('/submit');
+        navigate("/submit");
     };
 
     const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
@@ -67,7 +70,7 @@ export function CustomNavbar() {
     React.useEffect(() => {
         window.addEventListener(
             "resize",
-            () => window.innerWidth >= 960 && setIsNavOpen(false),
+            () => window.innerWidth >= 960 && setIsNavOpen(false)
         );
     }, []);
 
@@ -94,8 +97,13 @@ export function CustomNavbar() {
                     <Bars2Icon className="h-6 w-6" />
                 </IconButton>
 
-                <Button size="sm" variant="filled" onClick={navigateSubmit} className="hover:shadow-none">
-                    <span>Submit Place</span>
+                <Button
+                    size="sm"
+                    variant="filled"
+                    onClick={navigateSubmit}
+                    className="hover:shadow-none"
+                >
+                    <span>Submit</span>
                 </Button>
             </div>
             <Collapse open={isNavOpen} className="overflow-scroll">

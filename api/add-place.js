@@ -1,4 +1,4 @@
-import admin from 'firebase-admin';
+import admin from "firebase-admin";
 
 // Initialize Firebase Admin if not already initialized
 if (!admin.apps.length) {
@@ -14,25 +14,32 @@ if (!admin.apps.length) {
 export const db = admin.firestore();
 
 export default async function handler(req, res) {
-    if (req.method === 'POST') {
+    if (req.method === "POST") {
         try {
             const newPlace = req.body;
 
             // Validate newPlace object structure if needed
-            if (!newPlace.slug || !newPlace.name || !newPlace.latitude || !newPlace.longitude) {
-                return res.status(400).json({ message: 'Missing required fields' });
+            if (
+                !newPlace.slug ||
+                !newPlace.name ||
+                !newPlace.latitude ||
+                !newPlace.longitude
+            ) {
+                return res
+                    .status(400)
+                    .json({ message: "Missing required fields" });
             }
 
             // Add the new place to the 'places' collection
-            await db.collection('places').add(newPlace);
+            await db.collection("places").add(newPlace);
 
-            res.status(200).json({ message: 'Place added successfully' });
+            res.status(200).json({ message: "Place added successfully" });
         } catch (error) {
-            console.error('Error adding place:', error);
-            res.status(500).json({ message: 'Internal server error' });
+            console.error("Error adding place:", error);
+            res.status(500).json({ message: "Internal server error" });
         }
     } else {
-        res.setHeader('Allow', ['POST']);
+        res.setHeader("Allow", ["POST"]);
         res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }

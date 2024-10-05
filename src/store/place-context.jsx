@@ -1,5 +1,5 @@
-import { createContext, useState, useEffect } from 'react';
-import axios from 'axios'; // or you can use fetch API
+import { createContext, useState, useEffect } from "react";
+import axios from "axios"; // or you can use fetch API
 
 // Create the context
 export const PlaceContext = createContext({
@@ -20,15 +20,15 @@ export default function PlaceContextProvider({ children }) {
     // Fetch places from the backend
     const fetchPlaces = async () => {
         try {
-            const response = await axios.get('/api/fetch-places'); // Adjust the URL to your serverless function endpoint
+            const response = await axios.get("/api/fetch-places"); // Adjust the URL to your serverless function endpoint
             if (response.data && Array.isArray(response.data.places)) {
                 setPlaces(response.data.places);
                 setNotFound(false); // Reset notFound state on successful fetch
             } else {
-                console.error('Unexpected data format:', response.data);
+                console.error("Unexpected data format:", response.data);
             }
         } catch (error) {
-            console.error('Error fetching places:', error);
+            console.error("Error fetching places:", error);
         } finally {
             setLoading(false); // Set loading to false when data fetching is complete
         }
@@ -41,7 +41,7 @@ export default function PlaceContextProvider({ children }) {
 
     // Method to get a place by slug
     const getPlaceBySlug = (slug) => {
-        const place = places.find(place => place.slug === slug);
+        const place = places.find((place) => place.slug === slug);
         if (!place) {
             setNotFound(true); // Update notFound state if place is not found
         } else {
@@ -53,28 +53,28 @@ export default function PlaceContextProvider({ children }) {
     // Method to add a new place
     const addPlace = async (newPlace) => {
         try {
-            const response = await axios.post('/api/add-place', newPlace); // Adjust the URL to your serverless function endpoint
+            const response = await axios.post("/api/add-place", newPlace); // Adjust the URL to your serverless function endpoint
             if (response.status === 200) {
-                setPlaces(prevPlaces => [...prevPlaces, response.data]);
+                setPlaces((prevPlaces) => [...prevPlaces, response.data]);
             }
         } catch (error) {
-            console.error('Error adding place:', error);
+            console.error("Error adding place:", error);
         }
     };
 
     // Method to edit an existing place (no dynamic slug)
     const editPlace = async (updatedPlace) => {
         try {
-            const response = await axios.put('/api/edit-place', updatedPlace); // Edit place using a fixed endpoint
+            const response = await axios.put("/api/edit-place", updatedPlace); // Edit place using a fixed endpoint
             if (response.status === 200) {
-                setPlaces(prevPlaces =>
-                    prevPlaces.map(place =>
+                setPlaces((prevPlaces) =>
+                    prevPlaces.map((place) =>
                         place.slug === updatedPlace.slug ? response.data : place
                     )
                 );
             }
         } catch (error) {
-            console.error('Error editing place:', error);
+            console.error("Error editing place:", error);
         }
     };
 

@@ -1,9 +1,9 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { CustomNavbar } from "../components/CustomNavbar.jsx";
-import '../styles/places.css';
+import "../styles/places.css";
 import { TabsNav } from "../components/TabsNav.jsx";
-import { Helmet } from 'react-helmet';
-import { motion } from 'framer-motion';
+import { Helmet } from "react-helmet";
+import { motion } from "framer-motion";
 import Footer from "../components/Footer.jsx";
 
 function Places() {
@@ -12,19 +12,22 @@ function Places() {
     return (
         <>
             <Helmet>
-                <title>Places</title>
-                <meta name="description" content="All of your favorite places, in one place." />
+                <title>Landmarks - Travel Map</title>
+                <meta
+                    name="description"
+                    content="All of your favorite places, in one place."
+                />
                 <meta name="keywords" content="React, Vite, Metadata" />
             </Helmet>
 
             {/* Animated Heading */}
             <motion.h1
-                className="text-3xl md:text-4xl font-bold text-gray-800 m-auto mt-32 md:mt-32 text-center"
+                className="text-3xl md:text-4xl font-bold text-gray-800 m-auto mt-32 mb-6 md:mt-32 md:mb-6 text-center"
                 initial={{ opacity: 0, y: -50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
             >
-                All the places in my lists
+                My Favorite Places
             </motion.h1>
 
             {/* Animated Tabs Container */}

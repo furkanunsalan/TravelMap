@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import fetch from "node-fetch";
 
 export default async (req, res) => {
     const { lng, lat, zoom } = req.query;
@@ -9,9 +9,13 @@ export default async (req, res) => {
         return;
     }
     try {
-        const response = await fetch(`https://api.maptiler.com/maps/streets/style.json?key=${MAPTILER_API_KEY}`);
+        const response = await fetch(
+            `https://api.maptiler.com/maps/streets/style.json?key=${MAPTILER_API_KEY}`
+        );
         if (!response.ok) {
-            throw new Error(`Network response was not ok: ${response.statusText}`);
+            throw new Error(
+                `Network response was not ok: ${response.statusText}`
+            );
         }
         const data = await response.json();
         res.status(200).json(data);

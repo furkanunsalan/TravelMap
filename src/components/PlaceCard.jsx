@@ -1,7 +1,7 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@material-tailwind/react';
+import React from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@material-tailwind/react";
 
 const PlaceCard = ({ place, index, placeVariants }) => {
     const navigate = useNavigate();
@@ -21,8 +21,8 @@ const PlaceCard = ({ place, index, placeVariants }) => {
                 <p className="text-sm text-gray-600">{place.address}</p>
                 <p className="text-sm text-gray-600">{place.date}</p>
                 <Button
-                    onClick={() => navigate(`/places/${place.slug}`)}
-                    className="mt-4 w-full sm:w-auto sm:mx-auto hover:underline"
+                    onClick={() => navigate(`/landmarks/${place.slug}`)}
+                    className="mt-4 w-full sm:w-auto sm:mx-auto hover:bg-gray-800"
                 >
                     View Details
                 </Button>
