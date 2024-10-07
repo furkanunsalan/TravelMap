@@ -19,6 +19,7 @@ function CustomForm() {
         longitude: "",
         site: "",
         description: "",
+        status: "",
     });
     const [userType, setUserType] = useState("guest");
     const [email, setEmail] = useState("");
@@ -338,6 +339,7 @@ function CustomForm() {
                                     dateFormat="dd-MM-yyyy"
                                     className="border p-2 rounded w-full"
                                     placeholderText="dd-mm-yyyy"
+                                    disabled={formData.status === "ToGo"}
                                 />
                             </motion.div>
                         </>
