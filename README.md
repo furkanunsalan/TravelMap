@@ -27,8 +27,8 @@ Welcome to the Travel Map Website! This project is a personal tool to track and 
 ### Prerequisites
 
 - Node.js (v16 or later)
-- npm
-- Vercel CLI
+- NPM
+- Vercel CLI (Required for the backend to work properly.)
 
 ### Installation
 
@@ -61,7 +61,6 @@ Welcome to the Travel Map Website! This project is a personal tool to track and 
 
     ```bash
     vercel dev
-    # "npm run dev" should also work but backend won't work in that case
     ```
 
    Open `http://localhost:3000` in your browser to view the application.
@@ -70,9 +69,10 @@ Welcome to the Travel Map Website! This project is a personal tool to track and 
 
 ### Adding Places
 
-- **To Go:** List of places you plan to visit.
-- **Burger List:** List of places to relax or enjoy burgers.
-- **Chill Places:** Places to hang out with friends. Coffee shops, parks etc.
+- **Food:** list of food related places that I love visiting.
+- **Chill:** List of places to hangout with friends and family.
+- **Travel:** List of places to see around the world.
+- **Library:** List of libraries to sit and study.
 
 ### Viewing Places on the Map
 
