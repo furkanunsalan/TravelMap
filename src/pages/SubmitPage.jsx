@@ -3,12 +3,11 @@ import { CustomNavbar } from "../components/CustomNavbar.jsx";
 import { Helmet } from "react-helmet";
 import Footer from "../components/Footer.jsx";
 
-
 function SubmitPlace() {
     return (
         <>
             <Helmet>
-                <title>Submit Place - Travel Map</title>
+                <title>Submit Place | Travel Map</title>
                 <meta
                     name="description"
                     content="Submit your favorite places for people to see"

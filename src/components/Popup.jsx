@@ -35,7 +35,7 @@ const Popup = () => {
                                 Did you like this project?
                             </h2>
                             <p className="text-sm text-gray-600">
-                                Check out other projects and the code on GitHub!
+                                Check out other projects and the source-code on GitHub!
                             </p>
                             <a
                                 href="https://github.com/furkanunsalan"
@@ -44,7 +44,7 @@ const Popup = () => {
                                 className="mt-2 text-blue-500 hover:underline"
                             >
                                 <Button size="sm" variant="filled">
-                                    My Github
+                                    Let's Explore!
                                 </Button>
                             </a>
                         </div>

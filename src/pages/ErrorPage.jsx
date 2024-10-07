@@ -5,7 +5,7 @@ function ErrorPage() {
     return (
         <>
             <Helmet>
-                <title>Not Found - Travel Map</title>
+                <title>Not Found | Travel Map</title>
                 <meta name="description" content="This page does not exists!" />
                 <meta name="keywords" content="React, Vite, Metadata" />
             </Helmet>

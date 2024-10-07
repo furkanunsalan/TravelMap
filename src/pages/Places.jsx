@@ -1,18 +1,16 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { CustomNavbar } from "../components/CustomNavbar.jsx";
-import "../styles/places.css";
-import { TabsNav } from "../components/TabsNav.jsx";
+import { PlaceTabs } from "../components/PlaceTabs.jsx";
 import { Helmet } from "react-helmet";
 import { motion } from "framer-motion";
 import Footer from "../components/Footer.jsx";
+import "../styles/places.css";
 
 function Places() {
-    const navigate = useNavigate();
-
     return (
         <>
             <Helmet>
-                <title>Landmarks - Travel Map</title>
+                <title>Landmarks | Travel Map</title>
                 <meta
                     name="description"
                     content="All of your favorite places, in one place."
@@ -37,7 +35,7 @@ function Places() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5 }}
             >
-                <TabsNav />
+                <PlaceTabs />
             </motion.div>
 
             <CustomNavbar />
