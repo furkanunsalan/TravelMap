@@ -1,5 +1,39 @@
 # Travel Map Website
 
+## Topics
+
+- [Getting Started](#getting-started)
+    - [Overview of the Travel Map Website](#overview)
+    - [Features like interactive map, custom markers, and rating system](#features)
+    
+- [Installation & Setup](#installation--setup)
+    - [Install dependencies](#installation)
+    - [Set up environment variables](#set-up-environment-variables)
+    - [Run the development server](#run-the-development-server)
+    
+- [Local Development](#local-development)
+    - [Fork the repository](#fork-the-repository)
+    - [Clone the repository](#clone-the-repository)
+    - [Running the project locally](#running-the-project-locally)
+        - [Environment variables configuration](#environment-variables-configuration)
+        - [Viewing and adding places](#viewing-places-on-the-map)
+        - [Firebase integration for places and images](#database-structure)
+        
+- [Database Structure](#database-structure)
+    - [Firestore database layout for storing place details](#firestore-database-structure)
+    - [Firebase storage structure for place images](#storage-bucket-structure)
+    
+- [Contributing](#development)
+    - [Create a new branch](#create-a-new-branch)
+    - [Make changes and commit](#make-your-changes)
+    - [Push to remote](#push-to-remote)
+    - [Create a pull request](#open-a-pull-request)
+    
+- [License and Contact](#license)
+    - [License information](#license)
+    - [Contact details for questions and feedback](#contact)
+
+
 ## Overview
 
 Welcome to the Travel Map Website! This project is a personal tool to track and visualize travel destinations and places of interest on a map. It allows you to manage and view a list of places you plan to visit, as well as places you want to relax in. The application integrates with the MapTiler API to display interactive maps and custom markers.
@@ -82,6 +116,37 @@ Welcome to the Travel Map Website! This project is a personal tool to track and 
 ### Responsive Design
 
 - The layout adjusts for smaller screens, switching from a sidebar and map view to a stacked view on mobile devices.
+
+## Database Structure
+
+The project uses **Firebase Firestore** to store information about each place and **Firebase Storage** for images. Below is the structure for both.
+
+### Firestore Database Structure (`/places`)
+
+```
+/places
+  └──1EyeJjFgzMS33jogOG2W
+        ├── address: "Sinanpaşa, Ihlamurdere Cd. No:25A, 34022 Beşiktaş/İstanbul"
+        ├── date: "10-07-2024"
+        ├── description: ""
+        ├── id: "1EyeJjFgzMS33jogOG2W"
+        ├── latitude: "41.044224"
+        ├── longitude: "29.003012211640893"
+        ├── name: "Balta Burger"
+        ├── rating: 4
+        ├── site: ""
+        ├── slug: "balta-burger"
+        ├── status: "Gone"
+        └── tag: "Food"
+```
+
+### Storage Bucket Structure (`/images`)
+
+```
+/images
+    └── /balta-burger
+            └── cover.png
+```
 
 ## Development
 
