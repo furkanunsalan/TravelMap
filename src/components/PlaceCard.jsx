@@ -5,6 +5,7 @@ import { Button } from "@material-tailwind/react";
 
 const PlaceCard = ({ place, index, placeVariants }) => {
     const navigate = useNavigate();
+    
     return (
         <motion.div
             initial="hidden"
@@ -13,8 +14,21 @@ const PlaceCard = ({ place, index, placeVariants }) => {
             transition={{ duration: 0.5, delay: index * 0.1 }}
             className="bg-white shadow-lg rounded-lg overflow-hidden w-full flex flex-col"
         >
-            {/* Placeholder for image section */}
-            <div className="bg-gray-200 h-[150px] w-full"></div>
+            {/* Image Section: Display image if available, otherwise show placeholder */}
+            <div className="h-[150px] w-full">
+                {place.coverImageUrl ? (
+                    <img
+                        src={place.coverImageUrl}
+                        alt={place.name}
+                        className="w-full h-full object-cover"
+                    />
+                ) : (
+                    <div className="bg-gray-200 h-full w-full flex items-center justify-center">
+                        <span className="text-gray-500">No Image Available</span>
+                    </div>
+                )}
+            </div>
+
             {/* Content section */}
             <div className="p-4 flex flex-col justify-between flex-grow">
                 <h3 className="text-lg font-bold">{place.name}</h3>

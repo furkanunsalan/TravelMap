@@ -90,7 +90,7 @@ export default function Map() {
                                                         index < place.rating
                                                             ? "inline-block"
                                                             : "text-gray-300"
-                                                    }">★</span>`
+                                                    }">⭐</span>`
                                             )
                                             .join("")}
                                     </div>

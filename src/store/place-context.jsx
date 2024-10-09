@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import axios from "axios"; // or you can use fetch API
+import axios from "axios";
 
 // Create the context
 export const PlaceContext = createContext({

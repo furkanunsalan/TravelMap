@@ -11,6 +11,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import { format, parse } from "date-fns";
 import Footer from "../components/Footer.jsx";
 import "../styles/scrollbar.css";
+import {
+  FaCheckCircle,
+  FaMapMarked,
+  FaLink,
+  FaCalendar,
+} from "react-icons/fa"; // Example icon, replace with your icon import
+import { motion } from "framer-motion";
 
 function PlaceDetail() {
   const { "place-slug": placeSlug } = useParams();
@@ -159,6 +166,8 @@ function PlaceDetail() {
     return <Loading variant={1} />;
   }
 
+  const isGone = placeDetails.status === "Gone"; // Determine if status is "gone"
+
   return (
     <div className="h-screen overflow-auto">
       <Helmet>
@@ -172,64 +181,102 @@ function PlaceDetail() {
         />
         <meta name="keywords" content="React, Vite, Metadata" />
       </Helmet>
+
       <div className="mx-auto mt-32">
         <CustomNavbar />
-        <div className="relative h-96 mt-32 md:mt-5 w-5/6 md:w-1/2 mx-auto">
+        <motion.h1
+          className="text-3xl md:text-4xl font-bold text-gray-800 m-auto mt-32 mb-6 md:mt-32 md:mb-6 text-center"
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          {placeDetails.name}
+        </motion.h1>
+
+        <motion.div
+          className="relative h-96 mt-8 md:mt-5 w-5/6 md:w-1/2 mx-auto"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           <div ref={mapContainer} className="w-full h-full rounded-2xl" />
-        </div>
-        <div className="text-center mt-5">
-          {Array(placeDetails.rating)
-            .fill(false)
-            .map((_, index) => (
-              <span
-                key={index}
-                className={`text-black text-lg ${
-                  index < placeDetails.rating ? "inline-block" : "text-gray-300"
-                }`}
-              >
-                ★
-              </span>
-            ))}
-        </div>
-        <h1 className="text-center text-xl font-bold">{placeDetails.name}</h1>
-        {placeDetails.date ? (
-          <p className="text-center">Visited on {placeDetails.date}</p>
-        ) : (
-          <p className="text-center">Haven't visited yet</p>
-        )}
-        <div className="text-center mt-5 w-5/6 md:w-2/3 mx-auto">
-          {placeDetails.description && (
-            <p className="px-4 py-2 border border-gray-300 rounded-lg shadow-md bg-white mb-4">
-              {placeDetails.description}
-            </p>
+        </motion.div>
+
+        <motion.div
+          className="flex justify-between items-center mt-4 w-5/6 md:w-1/2 mx-auto"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          {placeDetails.date ? (
+            <div className="flex items-center">
+              <FaCalendar className="mr-2 text-gray-600" />
+              <p className="text-center text-gray-700">{placeDetails.date}</p>
+            </div>
+          ) : (
+            <p className="text-center text-gray-700">Haven't visited yet</p>
           )}
-          <div className="flex justify-center gap-4">
+
+          <div className="flex items-center space-x-4">
             <a
               href={`https://www.google.com/maps?q=${placeDetails.latitude},${placeDetails.longitude}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition"
+              className="inline-block px-4 py-2 bg-gray-800 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700 transition"
             >
-              View on Google Maps
+              <FaMapMarked className="inline-block" />
             </a>
             {placeDetails.site && (
               <a
                 href={placeDetails.site}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block px-6 py-2 bg-gray-800 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 transition"
+                className="inline-block px-4 py-2 bg-gray-800 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700 transition"
               >
-                Visit Official Site
+                <FaLink className="inline-block" />
               </a>
             )}
             <button
               onClick={toggleStatus}
-              className="inline-block px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-800 transition"
+              className={`inline-block px-4 py-2 text-white font-semibold rounded-lg shadow-md transition ${
+                isGone
+                  ? "bg-green-600 hover:bg-green-800"
+                  : "bg-gray-600 hover:bg-gray-800"
+              }`}
             >
-              Toggle Status
+              <FaCheckCircle className="inline-block" />
             </button>
           </div>
-        </div>
+        </motion.div>
+
+        <motion.div
+          className="text-center mt-8 w-5/6 md:w-1/2 mx-auto relative"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+        >
+          {placeDetails.description && (
+            <div className="px-4 py-2 border border-gray-300 rounded-lg shadow-md bg-white mb-4">
+              <div className="flex justify-center md:justify-start mb-2">
+                {Array(placeDetails.rating)
+                  .fill(false)
+                  .map((_, index) => (
+                    <span
+                      key={index}
+                      className={`text-black text-lg ${
+                        index < placeDetails.rating
+                          ? "inline-block"
+                          : "text-gray-300"
+                      }`}
+                    >
+                      ⭐
+                    </span>
+                  ))}
+              </div>
+              <p className="text-left">{placeDetails.description}</p>
+            </div>
+          )}
+        </motion.div>
       </div>
       <Footer />
       {showModal && (

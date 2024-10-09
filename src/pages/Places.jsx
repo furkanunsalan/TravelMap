@@ -30,7 +30,7 @@ function Places() {
 
             {/* Animated Tabs Container */}
             <motion.div
-                className="w-5/6 m-auto p-2 md:w-1/2"
+                className="w-5/6 m-auto p-2 md:w-3/4 xl:w-2/3"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5 }}
