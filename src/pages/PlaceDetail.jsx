@@ -11,12 +11,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { format, parse } from "date-fns";
 import Footer from "../components/Footer.jsx";
 import "../styles/scrollbar.css";
-import {
-  FaCheckCircle,
-  FaMapMarked,
-  FaLink,
-  FaCalendar,
-} from "react-icons/fa"; // Example icon, replace with your icon import
+import { FaCheckCircle, FaMapMarked, FaLink, FaCalendar } from "react-icons/fa"; // Example icon, replace with your icon import
 import { motion } from "framer-motion";
 
 function PlaceDetail() {
@@ -194,7 +189,7 @@ function PlaceDetail() {
         </motion.h1>
 
         <motion.div
-          className="relative h-96 mt-8 md:mt-5 w-5/6 md:w-1/2 mx-auto"
+          className="relative h-96 mt-8 md:mt-5 w-5/6 xl:w-1/2 mx-auto border border-solid rounded-2xl border-gray-400 shadow-2xl"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -203,7 +198,7 @@ function PlaceDetail() {
         </motion.div>
 
         <motion.div
-          className="flex justify-between items-center mt-4 w-5/6 md:w-1/2 mx-auto"
+          className="flex justify-between items-center mt-4 w-5/6 xl:w-1/2 mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
@@ -250,7 +245,7 @@ function PlaceDetail() {
         </motion.div>
 
         <motion.div
-          className="text-center mt-8 w-5/6 md:w-1/2 mx-auto relative"
+          className="text-center mt-8 w-5/6 xl:w-1/2 mx-auto relative"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.6 }}
@@ -276,6 +271,33 @@ function PlaceDetail() {
               <p className="text-left">{placeDetails.description}</p>
             </div>
           )}
+        </motion.div>
+        {/* New section for images */}
+        <motion.div
+          className="mt-8 w-5/6 xl:w-1/2 mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+        >
+          <h2 className="text-xl font-bold text-gray-800 mb-4">Images</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {placeDetails.coverImageUrl && (
+              <img
+                src={placeDetails.coverImageUrl}
+                alt="Cover"
+                className="w-full h-auto rounded-lg shadow-md transition-transform duration-700 hover:scale-105"
+              />
+            )}
+            {placeDetails.additionalImageUrls &&
+              placeDetails.additionalImageUrls.map((url, index) => (
+                <img
+                  key={index}
+                  src={url}
+                  alt={`Additional ${index + 1}`}
+                  className="w-full h-auto rounded-lg shadow-md transition-transform duration-700 hover:scale-105"
+                />
+              ))}
+          </div>
         </motion.div>
       </div>
       <Footer />

@@ -18,13 +18,16 @@ export default async (req, res) => {
         // Prepare promises for fetching images
         const imagePromises = snapshot.docs.map(async (doc) => {
             const place = { id: doc.id, ...doc.data() };
-            const imagePath = `images/${place.slug}/cover.png`;
-            const file = storage.bucket().file(imagePath);
+            const coverImagePath = `images/${place.slug}/cover.png`;
+            const additionalImagesPath = `images/${place.slug}/additional/`; // Path for additional images
+            const coverFile = storage.bucket().file(coverImagePath);
+            const additionalImages = [];
 
             try {
-                const [exists] = await file.exists();
-                if (exists) {
-                    const coverImageUrl = await file.getSignedUrl({
+                // Fetch cover image
+                const [coverExists] = await coverFile.exists();
+                if (coverExists) {
+                    const coverImageUrl = await coverFile.getSignedUrl({
                         action: 'read',
                         expires: '03-17-2025', // Expiration date for the URL
                     });
@@ -32,9 +35,25 @@ export default async (req, res) => {
                 } else {
                     place.coverImageUrl = defaultImageUrl; // Set fallback image URL
                 }
+
+                // Fetch additional images
+                const [files] = await storage.bucket().getFiles({ prefix: additionalImagesPath });
+                for (const file of files) {
+                    // Check if the file is an image
+                    if (file.name.endsWith('.jpg') || file.name.endsWith('.png') || file.name.endsWith('.jpeg')) {
+                        const additionalImageUrl = await file.getSignedUrl({
+                            action: 'read',
+                            expires: '03-17-2025', // Expiration date for the URL
+                        });
+                        additionalImages.push(additionalImageUrl[0]); // Add each URL to the array
+                    }
+                }
+                place.additionalImageUrls = additionalImages; // Assign the array to the place object
+
             } catch (error) {
-                console.error(`Error fetching image for ${place.slug}:`, error.message);
+                console.error(`Error fetching images for ${place.slug}:`, error.message);
                 place.coverImageUrl = defaultImageUrl; // Fallback to default image
+                place.additionalImageUrls = []; // Ensure additional images are empty on error
             }
 
             return place; // Return the place object

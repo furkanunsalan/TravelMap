@@ -28,7 +28,7 @@ export default async function handler(req, res) {
                 port: 587,
                 secure: false, // Use true if using port 465 for SSL
                 auth: {
-                    user: "map@furkanunsalan.dev",
+                    user: "travelmap@descite.org",
                     pass: process.env.MAIL_PASS,
                 },
                 tls: {
@@ -37,8 +37,8 @@ export default async function handler(req, res) {
             });
 
             const mailOptions = {
-                from: "map@furkanunsalan.dev",
-                to: "hi@furkanunsalan.dev",
+                from: "travelmap@descite.org",
+                to: "me@furkanunsalan.dev",
                 subject: "New Place Submission",
                 text: `New place submitted:\n\n${JSON.stringify(
                     formData,
