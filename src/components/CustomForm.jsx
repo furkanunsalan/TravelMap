@@ -7,6 +7,7 @@ import { PlaceContext } from "../store/place-context.jsx";
 import { formatDate } from "../../util/formatDate.js";
 import { generateSlug } from "../../util/generateSlug.js";
 import { motion } from "framer-motion";
+import { data } from "autoprefixer";
 
 function CustomForm() {
   const { addPlace } = useContext(PlaceContext);
@@ -85,6 +86,13 @@ function CustomForm() {
     }
   };
 
+  const [selectedImages, setSelectedImages] = useState([]);
+
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files); // Get the selected files
+    setSelectedImages(files); // Store the files in the component’s state
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -96,6 +104,7 @@ function CustomForm() {
       return;
     }
 
+    // Prepare data to send
     const dataToSend = {
       ...formData,
       slug,
@@ -103,51 +112,72 @@ function CustomForm() {
       date: userType === "admin" ? formatDate(formData.date) : undefined, // Include date only for admin
     };
 
-    if (userType === "admin") {
-      try {
-        const response = await fetch("/api/authenticate", {
+    // Assuming 'selectedImages' is an array of File objects captured from input[type="file"]
+    const images = selectedImages;
+
+    // Convert images to base64 or use a FormData approach if you're sending multipart form-data
+    const imagePromises = images.map((image) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(image); // Convert to base64
+        reader.onloadend = () => resolve(reader.result.split(",")[1]); // Return base64 string without metadata part
+        reader.onerror = reject;
+      });
+    });
+
+    try {
+      const base64Images = await Promise.all(imagePromises); // Convert all images to base64
+
+      // Include images in dataToSend
+      dataToSend.images = base64Images;
+
+      // If user is admin, authenticate first, then submit
+      if (userType === "admin") {
+        const authResponse = await fetch("/api/authenticate", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password }),
         });
-        const data = await response.json();
+
+        const authData = await authResponse.json();
+
+        if (authResponse.ok) {
+          const response = await addPlace(dataToSend); // Submit place with images
+
+          if (response.ok) {
+            alert("Place added successfully");
+            navigate("/"); // Redirect to home page
+            window.location.reload(); // Reload the page
+          } else {
+            setAuthError(response.error);
+          }
+        } else {
+          setAuthError(authData.error);
+        }
+      } else {
+        // For non-admin users, send data directly (including images)
+        const response = await fetch("/api/addPlace", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(dataToSend),
+        });
 
         if (response.ok) {
-          addPlace(dataToSend);
           alert("Place added successfully");
           navigate("/"); // Redirect to home page
           window.location.reload(); // Reload the page
         } else {
-          setAuthError(data.error);
+          alert("An error occurred while adding the place.");
         }
-      } catch (error) {
-        setAuthError("An error occurred while authenticating.");
       }
-    } else {
-      try {
-        const response = await fetch("/api/send-email", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ formData: dataToSend }),
-        });
-        const data = await response.json();
-
-        if (response.ok) {
-          alert("Email sent successfully");
-          navigate("/"); // Redirect to home page
-          window.location.reload(); // Reload the page
-        } else {
-          alert("An error occurred while sending the email.");
-        }
-      } catch (error) {
-        alert("An error occurred while sending the email.");
-      }
+    } catch (error) {
+      console.error("Error adding place:", error);
+      alert(
+        "An error occurred while processing the images or submitting the form."
+      );
     }
 
+    // Clear form data after submission
     setFormData({
       name: "",
       address: "",
@@ -158,6 +188,7 @@ function CustomForm() {
       site: "",
       description: "",
     });
+    setSelectedImages([]); // Clear selected images
     setEmail("");
     setPassword("");
     setAuthError("");
@@ -485,6 +516,41 @@ function CustomForm() {
               className="border p-2 rounded"
               rows="4"
             />
+          </motion.div>
+
+          {/* Image Field */}
+          <motion.div
+            className="flex flex-col"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3, delay: 1.2 }}
+          >
+            <label className="mb-1 font-medium" htmlFor="site">
+              Images
+            </label>
+            <input
+              type="file"
+              id="images"
+              name="images"
+              accept="image/*"
+              multiple
+              onChange={handleImageUpload}
+              className="border p-2 w-full rounded-md"
+            />
+            <div className="grid grid-cols-3 gap-2 mt-2">
+              {selectedImages.map((image, index) => (
+                <div
+                  key={index}
+                  className="w-20 h-20 overflow-hidden border rounded-md"
+                >
+                  <img
+                    src={URL.createObjectURL(image)}
+                    alt={`Preview ${index}`}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+              ))}
+            </div>
           </motion.div>
         </div>
 

@@ -57,6 +57,7 @@ export default function PlaceContextProvider({ children }) {
             if (response.status === 200) {
                 setPlaces((prevPlaces) => [...prevPlaces, response.data]);
             }
+            return response
         } catch (error) {
             console.error("Error adding place:", error);
         }

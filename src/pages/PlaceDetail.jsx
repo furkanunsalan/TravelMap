@@ -112,6 +112,7 @@ function PlaceDetail() {
 
   const handleEditSubmit = async (updatedDetails) => {
     setIsSubmitting(true); // Start the submission process
+    const {email, password, ...rest} = updatedDetails
     try {
         const response = await fetch("/api/authenticate", {
             method: "POST",
@@ -122,7 +123,7 @@ function PlaceDetail() {
 
         if (response.ok) {
           await editPlace({
-            ...updatedDetails
+            ...rest
           }); 
 
             setPlaceDetails(updatedDetails); // Update local state with new details
