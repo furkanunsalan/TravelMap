@@ -11,13 +11,21 @@ import "react-datepicker/dist/react-datepicker.css";
 import { format, parse } from "date-fns";
 import Footer from "../components/Footer.jsx";
 import "../styles/scrollbar.css";
-import { FaCheckCircle, FaMapMarked, FaLink, FaCalendar } from "react-icons/fa"; // Example icon, replace with your icon import
+import {
+  FaCheckCircle,
+  FaMapMarked,
+  FaLink,
+  FaCalendar,
+  FaEdit,
+} from "react-icons/fa"; // Example icon, replace with your icon import
 import { motion } from "framer-motion";
+import CustomEditModal from "../components/CustomEditModal.jsx";
 
 function PlaceDetail() {
   const { "place-slug": placeSlug } = useParams();
   const [placeDetails, setPlaceDetails] = useState();
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [modalData, setModalData] = useState({
     email: "",
     password: "",
@@ -102,6 +110,16 @@ function PlaceDetail() {
     setShowModal(true);
   };
 
+  const handleEditSubmit = async (updatedDetails) => {
+    try {
+      await editPlace(updatedDetails); // Edit place through context
+      setPlaceDetails(updatedDetails); // Update local state with new details
+      setShowEditModal(false); // Close the edit modal after submission
+    } catch (error) {
+      console.error("Error editing place:", error);
+    }
+  };
+
   const handleModalSubmit = async () => {
     setIsSubmitting(true);
     try {
@@ -148,6 +166,10 @@ function PlaceDetail() {
     setShowModal(false);
   };
 
+  const handleEditModalClose = () => {
+    setShowEditModal(false);
+  };
+
   const handleModalChange = (e) => {
     const { name, value } = e.target;
     setModalData((prevData) => ({ ...prevData, [name]: value }));
@@ -189,7 +211,7 @@ function PlaceDetail() {
         </motion.h1>
 
         <motion.div
-          className="relative h-96 mt-8 md:mt-5 w-5/6 xl:w-1/2 mx-auto border border-solid rounded-2xl border-gray-400 shadow-2xl"
+          className="relative h-96 mt-8 md:mt-5 w-5/6 xl:w-1/2 mx-auto rounded-2xl shadow-2xl"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -198,21 +220,23 @@ function PlaceDetail() {
         </motion.div>
 
         <motion.div
-          className="flex justify-between items-center mt-4 w-5/6 xl:w-1/2 mx-auto"
+          className="flex flex-col md:flex-row justify-between items-center mt-4 w-5/6 xl:w-1/2 mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
           {placeDetails.date ? (
-            <div className="flex items-center">
+            <div className="flex items-center mb-2 lg:mb-0">
               <FaCalendar className="mr-2 text-gray-600" />
               <p className="text-center text-gray-700">{placeDetails.date}</p>
             </div>
           ) : (
-            <p className="text-center text-gray-700">Haven't visited yet</p>
+            <p className="text-center text-gray-700 mb-2 lg:mb-0">
+              Haven't visited yet
+            </p>
           )}
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 flex-wrap">
             <a
               href={`https://www.google.com/maps?q=${placeDetails.latitude},${placeDetails.longitude}`}
               target="_blank"
@@ -231,6 +255,12 @@ function PlaceDetail() {
                 <FaLink className="inline-block" />
               </a>
             )}
+            <button
+              onClick={() => setShowEditModal(true)} // Open edit modal
+              className="inline-block px-4 py-2 bg-gray-800 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700 transition"
+            >
+              <FaEdit className="inline-block" />
+            </button>
             <button
               onClick={toggleStatus}
               className={`inline-block px-4 py-2 text-white font-semibold rounded-lg shadow-md transition ${
@@ -312,6 +342,13 @@ function PlaceDetail() {
           onClose={handleModalClose}
           isToGo={placeDetails.status === "ToGo"}
           isSubmitting={isSubmitting}
+        />
+      )}
+      {showEditModal && (
+        <CustomEditModal
+          placeDetails={placeDetails}
+          onClose={handleEditModalClose}
+          onSubmit={handleEditSubmit}
         />
       )}
     </div>
