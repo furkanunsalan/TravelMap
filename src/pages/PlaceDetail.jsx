@@ -111,14 +111,33 @@ function PlaceDetail() {
   };
 
   const handleEditSubmit = async (updatedDetails) => {
+    setIsSubmitting(true); // Start the submission process
     try {
-      await editPlace(updatedDetails); // Edit place through context
-      setPlaceDetails(updatedDetails); // Update local state with new details
-      setShowEditModal(false); // Close the edit modal after submission
+        const response = await fetch("/api/authenticate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedDetails), // Send updated details
+        });
+        const data = await response.json(); // Parse the response as JSON
+
+        if (response.ok) {
+          await editPlace({
+            ...updatedDetails
+          }); 
+
+            setPlaceDetails(updatedDetails); // Update local state with new details
+            setShowEditModal(false); // Close the modal
+        } else {
+            alert(data.error || "Update failed"); // Handle errors
+        }
     } catch (error) {
-      console.error("Error editing place:", error);
+        console.error("Error updating place:", error); // Log errors
+    } finally {
+        setIsSubmitting(false); // End the submission process
     }
-  };
+};
+
+  
 
   const handleModalSubmit = async () => {
     setIsSubmitting(true);
@@ -220,18 +239,18 @@ function PlaceDetail() {
         </motion.div>
 
         <motion.div
-          className="flex flex-col md:flex-row justify-between items-center mt-4 w-5/6 xl:w-1/2 mx-auto"
+          className="flex flex-col md:flex-row justify-between items-center mt-8 w-5/6 xl:w-1/2 mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
           {placeDetails.date ? (
             <div className="flex items-center mb-2 lg:mb-0">
-              <FaCalendar className="mr-2 text-gray-600" />
-              <p className="text-center text-gray-700">{placeDetails.date}</p>
+              <FaCalendar className="mr-2 text-gray-700" />
+              <p className="text-center text-gray-800">{placeDetails.date}</p>
             </div>
           ) : (
-            <p className="text-center text-gray-700 mb-2 lg:mb-0">
+            <p className="text-center text-gray-8 mb-2 lg:mb-0">
               Haven't visited yet
             </p>
           )}
