@@ -156,10 +156,10 @@ function CustomForm() {
         }
       } else {
         // For non-admin users, send data directly (including images)
-        const response = await fetch("/api/addPlace", {
+        const response = await fetch("/api/send-email", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(dataToSend),
+          body: JSON.stringify({formData: dataToSend}),
         });
 
         if (response.ok) {
