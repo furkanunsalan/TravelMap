@@ -130,7 +130,7 @@ export default function Map() {
                                             ? "#7a49a5"
                                             : "#007BFF"
                                     }';"
-                                    onclick="window.location.href='/places/${
+                                    onclick="window.location.href='/landmarks/${
                                         place.slug
                                     }'"
                                 >
